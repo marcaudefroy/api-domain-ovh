@@ -1,0 +1,24 @@
+{
+  "name": "domain-api-doc",
+  "version": "0.0.1",
+  "description": "domain api doc",
+  "main": "index.js",
+  "authors": {
+    "name": "",
+    "email": ""
+  },
+  "repository": "/domain-api-doc",
+  "scripts": {
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.7.1",
+    "vuepress-plugin-element-tabs": "^0.2.8",
+    "vuepress-theme-dark": "^0.1.0"
+  },
+  "dependencies": {
+    "vuepress-theme-default-prefers-color-scheme": "^1.1.2"
+  }
+}
