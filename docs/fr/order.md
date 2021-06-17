@@ -1,38 +1,38 @@
 # Commander un nom de domaine 
 
-## L'api de commande
+## L'API de commande
 
-Afin de commander vos noms de domaine, voici une présentation des différents objets que tu vas devoir manipuler au travers de l'API.
+Afin de commander vos noms de domaine, voici une présentation des différents objets que vous allez devoir manipuler au travers de l'API.
 
 
 ### Le *panier*
 
-L'objet *cart* de l'api représente ce panier. Différentes actions sont disponible :
+L'objet *cart* de l'API représente ce panier. Différentes actions sont disponible :
 
 - Le créer : Peut être fait sans être authentifié
 - L'assigner à un nic : Indispensable pour valider un panier
 - Y ajouter des produits
 - Demander un aperçu
-- Demander une validation en "dry-run" (sans générer de BC)
-- Générer un BC
+- Demander une validation en "dry-run" (sans générer de bon de commande)
+- Générer un bon de commande
 
-Les apis commencent par /order/cart/
+Les APIs concernées commencent par `/order/cart/`
 
 
 ### Les *produits*
 
 Un **item** représente un produit qui peut être ajouter dans un panier.
 Il possède 
-- une api pour récupérer la disponibilité du produit
-- des apis pour ajouter/modifier/supprimer un produit dans le panier
-- une api pour récupérer les configurations requises afin de valider le panier
-- des apis pour ajouter/supprimer une configuration associé au produit.
+- une API pour récupérer la disponibilité du produit
+- des APIs pour ajouter/modifier/supprimer un produit dans le panier
+- une API pour récupérer les configurations requises afin de valider le panier
+- des APIs pour ajouter/supprimer une configuration associé au produit.
 
-Les apis commencent par /order/cart/{cartID}/item/
+Les APIs commencent par /order/cart/{cartID}/item/
 
 ### Workflow
 
-Globalement, la commande d'un produit OVHcloud via l'api se fera toujours au travers de ces étapes:
+Globalement, la commande d'un produit OVHcloud via l'API se fera toujours au travers de ces étapes:
 
 1. Créer un panier
 1. Récupérer les offres disponible pour le produit souhaité
@@ -46,7 +46,7 @@ Globalement, la commande d'un produit OVHcloud via l'api se fera toujours au tra
 
 ## Création du panier
 
-La première étape de commande d'un nom de domaine est la création du panier avec l'api suivante : 
+La première étape de commande d'un nom de domaine est la création du panier avec l'API suivante : 
 
 `POST /order/cart`
 
@@ -118,7 +118,7 @@ client.requestPromised('POST', '/order/cart')
 
 :::
 
-Garder la propriété cartId de côté, elle te servira tout au long des étapes suivantes.
+Gardez la propriété cartId de côté, elle te servira tout au long des étapes suivantes.
 
 ## Récupération des offres disponibles
 
@@ -674,7 +674,7 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
 
 Sans rentrer dans les détails de ce payload, il y a certaines choses à retenir :
 
-- L'ajout d'un item dans le panier produit 3 lignes de details sur le BC
+- L'ajout d'un item dans le panier produit 3 lignes de details sur le bon de commande
 - Une ligne de detail est ajouté par promotion (detailType = GIFT)
 - L'objet prices représente le total du panier avec ou sans taxe.
 - La liste des contrats est vide lors du résumé. Elle sera remplit lors de la validation ou de la création du bon de commande.
@@ -785,8 +785,8 @@ Voici la liste exhaustive des différentes configurations requises pour un nom d
 
 Label | Type | Obligatoire | Description
 --------- | -------  | ------- | ---------
-ADMIN_ACCOUNT | string | Non | Représente le nic ovh qui pourra administrer le domaine et sera associé en tant qu'admin sur le whois. Si vide, le nic connecté à l'api sera pris par default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
-TECH_ACCOUNT | string | Non | Représente le nic ovh qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le whois. Si vide, le nic connecté à l'api sera pris pas default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
+ADMIN_ACCOUNT | string | Non | Représente le nic ovh qui pourra administrer le domaine et sera associé en tant qu'admin sur le whois. Si vide, le nic connecté à l'API sera pris par default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
+TECH_ACCOUNT | string | Non | Représente le nic ovh qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le whois. Si vide, le nic connecté à l'API sera pris pas default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
 OWNER_CONTACT | /me/contact ou /domain/contact | Non | Représente le propriétaire du nom de domaine. Si vide, le nicadmin sera pris en modèle pour créer un contact. La valeur attendu est une chaine de charactère sous la forme /me/contact/1234 ou /domain/contact/12345
 DOMAIN_CONFIG | json | Relatif à l'extension | Très rarement présent, il est lié à certaines contraintes de tld spécifique (gov.uk par exemple).
 ACCEPT_CONDITIONS | bool | Oui si présent | Indique que l'extension possède des conditions particulière à l'obtention de l'extension.
@@ -801,14 +801,14 @@ OWNER_LEGAL_AGE | bool | Oui | Toujours présent, il s'agit d'une configuration 
 
 Attention, cette API est designé pour répondre au besoin de la plupart des produits OVH. Cependant, les noms de domaine ont la particularité d'avoir des règles beaucoup plus complexe concernant la valeur de certaines configuration. Notamment sur les configurations ADMIN_ACCOUNT, OWNER_CONTACT ou encore DOMAIN_CONFIG. Celle-ci étant lié à des règles de gestion de la part des registres.
 
-Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à berlin. Or cette api est en incapacité de décrire ce genre de règle.
+Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à berlin. Or cette API est en incapacité de décrire ce genre de règle.
 
 Pour cela, il existe d'autres API afin de décrire les informations nécessaire à un nom de domaine de manière précise. Ces APIs étant un peu complexe et utilisé également en dehors de la commande (comme pour la mise à jour d'un contact), elles ont le droit à leur propre section : [Gestion des règles](rules)
 ::: 
 
 ::: warning  Spécificité de la configuration OWNER_CONTACT
 
-Ici, le OWNER_CONTACT représente une "recourse" API, à savoir /me/contact ou plus précisement /domain/contact. Les apis permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
+Ici, le OWNER_CONTACT représente une "recourse" API, à savoir /me/contact ou plus précisement /domain/contact. Les APIs permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
 
 ::: 
 
@@ -918,7 +918,7 @@ TODO
 
 ## Gestion du panier
 
-A tout moment, il est bien entendu possible de visualiser et manipuler le panier avec les api suivantes.
+A tout moment, il est bien entendu possible de visualiser et manipuler le panier avec les API suivantes.
 
 #### Récupération des items
 
@@ -954,4 +954,4 @@ waiveRetractationPeriod | true | "" | Requis pour un nom de domaine. Il représe
 
 ## Paiement du bon de commande
 
-Le gestion des bons de commande se font via les apis /me/order/{orderId} et ne seront pas explicité dans cette partie.
+Le gestion des bons de commande se font via les APIs /me/order/{orderId} et ne seront pas explicité dans cette partie.
