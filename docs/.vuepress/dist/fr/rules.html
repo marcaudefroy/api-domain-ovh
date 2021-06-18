@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gestion des conditions d&#39;éligibilité | API domain</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="domain api doc">
+    <meta name="theme-color" content="#0057AE">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/api-domain-ovh/assets/css/0.styles.e1de5396.css" as="style"><link rel="preload" href="/api-domain-ovh/assets/js/app.3acf7551.js" as="script"><link rel="preload" href="/api-domain-ovh/assets/js/2.11db361c.js" as="script"><link rel="preload" href="/api-domain-ovh/assets/js/16.945cabfc.js" as="script"><link rel="prefetch" href="/api-domain-ovh/assets/js/10.53f5380b.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/11.e6b7c83e.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/12.8f17e046.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/13.ac18f423.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/14.9595341f.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/15.028fd7d5.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/17.4c6ac85e.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/3.c7879eca.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/4.d67965fb.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/5.68abe753.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/6.75528547.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/7.83ce4c72.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/8.6f1977cc.js"><link rel="prefetch" href="/api-domain-ovh/assets/js/9.8ccf4446.js">
+    <link rel="stylesheet" href="/api-domain-ovh/assets/css/0.styles.e1de5396.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/api-domain-ovh/fr/" class="home-link router-link-active"><!----> <span class="site-name">API domain</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/api-domain-ovh/fr/.html" class="nav-link">
+  
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">Languages</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/api-domain-ovh/" class="nav-link">
+  en-US
+</a></li><li class="dropdown-item"><!----> <a href="/api-domain-ovh/fr/rules.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  fr-FR
+</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/api-domain-ovh/fr/.html" class="nav-link">
+  
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Select language" class="dropdown-title"><span class="title">Languages</span> <span class="arrow down"></span></button> <button type="button" aria-label="Select language" class="mobile-dropdown-title"><span class="title">Languages</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/api-domain-ovh/" class="nav-link">
+  en-US
+</a></li><li class="dropdown-item"><!----> <a href="/api-domain-ovh/fr/rules.html" aria-current="page" class="nav-link router-link-exact-active router-link-active">
+  fr-FR
+</a></li></ul></div></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/api-domain-ovh/fr/" aria-current="page" class="sidebar-link">Introduction</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/#pre-requis-a-cette-documentation" class="sidebar-link">Pré-requis à cette documentation</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/#sdk-disponibles" class="sidebar-link">SDK disponibles</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/#vocabulaire" class="sidebar-link">Vocabulaire</a></li></ul></li><li><a href="/api-domain-ovh/fr/order.html" class="sidebar-link">Commander un nom de domaine</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#l-api-de-commande" class="sidebar-link">L'API de commande</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#creation-du-panier" class="sidebar-link">Création du panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#recuperation-des-offres-disponibles" class="sidebar-link">Récupération des offres disponibles</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#ajout-d-un-domain-dans-le-panier" class="sidebar-link">Ajout d'un domain dans le panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#resume-du-panier" class="sidebar-link">Résumé du panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#assigner-le-panier" class="sidebar-link">Assigner le panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#gestion-des-configurations" class="sidebar-link">Gestion des configurations</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#gestion-des-options" class="sidebar-link">Gestion des options</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#gestion-du-panier" class="sidebar-link">Gestion du panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#validation-du-panier" class="sidebar-link">Validation du panier</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#creation-du-bon-de-commande" class="sidebar-link">Création du bon de commande</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/order.html#paiement-du-bon-de-commande" class="sidebar-link">Paiement du bon de commande</a></li></ul></li><li><a href="/api-domain-ovh/fr/rules.html" aria-current="page" class="active sidebar-link">Règles sur un domain</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/rules.html#introduction" class="sidebar-link">Introduction</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/rules.html#la-representation-json" class="sidebar-link">La représentation json</a></li></ul></li><li><a href="/api-domain-ovh/fr/domain.html" class="sidebar-link">Gestion d'un domain</a></li><li><a href="/api-domain-ovh/fr/contacts.html" class="sidebar-link">Gestion des contacts</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/contacts.html#introduction" class="sidebar-link">Introduction</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/contacts.html#gestion-des-nics-admin-et-tech" class="sidebar-link">Gestion des Nics admin et tech</a></li><li class="sidebar-sub-header"><a href="/api-domain-ovh/fr/contacts.html#gestion-du-contact-proprietaire" class="sidebar-link">Gestion du contact propriétaire</a></li></ul></li><li><a href="/api-domain-ovh/fr/operations.html" class="sidebar-link">Gestion des opérations</a></li><li><a href="/api-domain-ovh/fr/changelog.html" class="sidebar-link">Changelog</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="gestion-des-conditions-d-eligibilite"><a href="#gestion-des-conditions-d-eligibilite" class="header-anchor">#</a> Gestion des conditions d'éligibilité</h1> <h2 id="introduction"><a href="#introduction" class="header-anchor">#</a> Introduction</h2> <p>L'obtention et la détention d'un nom de domaine sont accompagnées d'obligations légales tel que :</p> <ul><li>les conditions d'utilisation d'un nom de domaine. Un .travel doit nécessairement avoir un lien avec l'industrie du tourisme.</li> <li>les conditions d'éligibilitées. L'adresse du contact propriétaire d'un .eu doit se situer au sein de l'union européenne.</li></ul> <p>Ces conditions sont fixées par l'opérateur de l'extension, le registre, et varient selon les extensions tout en évoluant au fil du temps.</p> <p>Concernant les conditions d'éligibilité, elles concernent des éléments connues du registrar tel que le domain, les contacts ou encore la procédure d'enregistrement. Ces conditions d'éligibilité, qu'on peut appeler règles s'appliquent :</p> <ul><li>Sur les données du <strong>contact propriétaire, administratif et technique</strong>. Par exemple, l'adresse du propriétaire doit se situé au sein de l'union européenne pour un domain .eu.</li> <li>Sur des données liées à la <strong>procédure</strong> de demande de création, de transfer, de changement de propriétaire. Par exemple la raison de la création d'un domaine en .fr représentant un nom de ville.</li></ul> <p>Avec un nombre d'extensions grandissant d'année en année, il devient ingérable de traiter ces différentes règles manuellement. Il devient alors nécessaire d'automatiser la gestion de ces règles.
+En créant une description de ces différentes règles dans un format json, il est possible d'automatiser la génération des différents formulaires requis ainsi que la validation des données saisies.</p> <h2 id="la-representation-json"><a href="#la-representation-json" class="header-anchor">#</a> La représentation json</h2> <p>Les conditions d'éligibilités d'un domain peuvent être représenté sous la forme d'un unique objet json <strong>récursif</strong>.</p> <p>Voici l'exemple de la représentation json d'un .com que l'on peut obtenir via l'api <code>/domain/configurationRule</code> (que nous expliciteront plus tard).</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;and&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_CONTACT&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contact&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;fields&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;and&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;address.city&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the city of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;address.country&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the country of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;FR&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contains&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;values&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                  <span class="token string">&quot;AC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AQ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AX&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;AZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BB&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BJ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BQ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;BZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CV&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CX&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;CZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DJ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;DZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;EA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;EC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;EE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;EG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;EH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ER&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ES&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ET&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FJ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;FR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GB&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GP&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GQ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;GY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;HK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;HN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;HR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;HT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;HU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ID&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IQ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;IT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;JE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;JM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;JO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;JP&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KP&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;KZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LB&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LV&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;LY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ME&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ML&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MP&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MQ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MV&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MX&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;MZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NP&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;NZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;OM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;PY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;QA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;RE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;RO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;RS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;RU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;RW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SB&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SJ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ST&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SV&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SX&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;SZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TD&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TH&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TJ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TO&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TV&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TW&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;TZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;UA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;UG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;UM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;US&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;UY&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;UZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VC&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VG&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;VU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;WF&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;WS&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;XK&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;YE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;YT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ZA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ZM&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;ZW&quot;</span>
+                <span class="token punctuation">]</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;email&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the email of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem@ovh.com&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;firstName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the firstname of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;conditions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_CONTACT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contact&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;fields&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;legalForm&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;eq&quot;</span><span class="token punctuation">,</span>
+                        <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;individual&quot;</span>
+                      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                      <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                      <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                    <span class="token punctuation">}</span>
+                  <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;language&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the langage of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;fr_FR&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contains&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;values&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                  <span class="token string">&quot;fr_FR&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;pl_PL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;de_DE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;es_ES&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;en_GB&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;it_IT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;pt_PT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;nl_NL&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;cs_CZ&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;en_IE&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;lt_LT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;fi_FI&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;fr_SN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;fr_TN&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;fr_MA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;en_AU&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;en_CA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;fr_CA&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;en_US&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;es_ES&quot;</span>
+                <span class="token punctuation">]</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lastName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the lastname of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;conditions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_CONTACT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contact&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;fields&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;legalForm&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;eq&quot;</span><span class="token punctuation">,</span>
+                        <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;individual&quot;</span>
+                      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                      <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                      <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                    <span class="token punctuation">}</span>
+                  <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;legalForm&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the legal status of owner.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;individual&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contains&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;values&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                  <span class="token string">&quot;association&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;corporation&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;individual&quot;</span><span class="token punctuation">,</span>
+                  <span class="token string">&quot;other&quot;</span>
+                <span class="token punctuation">]</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;address.line1&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the address of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;organisationName&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the organisation of the owner contact&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;lorem&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;conditions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_CONTACT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contact&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;fields&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;legalForm&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ne&quot;</span><span class="token punctuation">,</span>
+                        <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;individual&quot;</span>
+                      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                      <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                      <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                    <span class="token punctuation">}</span>
+                  <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;phone&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the phone of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;+33.612345678&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;address.zip&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;Represents the zip of the owner contact.&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;12345&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;conditions&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_CONTACT&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;contact&quot;</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;fields&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;address.country&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;string&quot;</span><span class="token punctuation">,</span>
+                    <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;notcontains&quot;</span><span class="token punctuation">,</span>
+                        <span class="token property">&quot;values&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                          <span class="token string">&quot;IE&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;AZ&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;DJ&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;LA&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;CI&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;AN&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;HK&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;BO&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;PA&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;HN&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;NI&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;SV&quot;</span><span class="token punctuation">,</span>
+                          <span class="token string">&quot;CO&quot;</span>
+                        <span class="token punctuation">]</span>
+                      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                      <span class="token punctuation">{</span>
+                        <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                      <span class="token punctuation">}</span>
+                    <span class="token punctuation">]</span>
+                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                  <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span>
+                      <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+                    <span class="token punctuation">}</span>
+                  <span class="token punctuation">]</span>
+                <span class="token punctuation">}</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token punctuation">{</span>
+                <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;maxlength&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;value&quot;</span><span class="token operator">:</span> <span class="token string">&quot;255&quot;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;rule related to the owner domain&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">&quot;operator&quot;</span><span class="token operator">:</span> <span class="token string">&quot;required&quot;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">&quot;label&quot;</span><span class="token operator">:</span> <span class="token string">&quot;OWNER_LEGAL_AGE&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;bool&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;The owner must be of legal age to acquire a domain name.&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;placeholder&quot;</span><span class="token operator">:</span> <span class="token string">&quot;true&quot;</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">&quot;contexts&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">&quot;order&quot;</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;constraints&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Au premier regard, cette règle semble verbeuse et intimidante. Par la suite, nous allons voir pas à pas comment elle est construite.</p> <h3 id="objets"><a href="#objets" class="header-anchor">#</a> Objets</h3> <p>Dans un premier temps, regardons les élements qui composent la représentation json des conditions d'éligibilité.</p> <ul><li><code>Rule</code> : Objet de règle principal représentant les conditions d'éligibilité. Elle contient les autres objets décris dans les autres points.</li> <li><code>Label</code> : Représente une information et une sous-information : authInfo, owner_contact, vat, nom, prénom, etc...</li> <li><code>Type</code> : Indique le format d'information d'un label : string, number, bool, contact...</li> <li><code>Constraint</code> : Represente les contraintes appliqué à la valeur d'un label.</li> <li><code>Condition</code> : Spécifie les conditions d'application d'un label ou d'une contrainte. Une condition est une <code>rule</code>. Si la condition (rule) est respecté, alors l'objet associé doit être appliqué.</li></ul> <h4 id="labels"><a href="#labels" class="header-anchor">#</a> Labels</h4> <table><thead><tr><th>Label</th> <th>UI</th> <th>Comment</th></tr></thead> <tbody><tr><td>ACCEPT_CONDITIONS</td> <td>text with checkbox</td> <td>Text providing information on specials condition that have be accepted</td></tr> <tr><td>REASON</td> <td>textarea</td> <td>Reason for purchase</td></tr> <tr><td>CLAIMS_NOTICE</td> <td>Text with checkbox</td> <td>Text providing information related to a claim notice that have be accepted</td></tr> <tr><td>PROTECTED_CODE</td> <td>Input text</td> <td>Code asked when a domain is protected</td></tr> <tr><td>AUTH_INFO</td> <td>Input text</td> <td>Code asked to transfer a domain from an another registrar</td></tr> <tr><td>DOMAIN_CONFIG</td> <td>Form</td> <td>List of fields related to a domain</td></tr> <tr><td>ADMIN_CONTACT</td> <td>Form</td> <td>List of fields related to an admin contact</td></tr> <tr><td>TECH_CONTACT</td> <td>Form</td> <td>List of fields related to an tech contact</td></tr> <tr><td>OWNER_CONTACT</td> <td>Form</td> <td>List of fields related to an owner contact</td></tr> <tr><td>OWNER_LEGAL_AGE</td> <td>Text with checkbox</td> <td>If individual, customer must be have legal age to purchase a domain</td></tr></tbody></table> <h4 id="types"><a href="#types" class="header-anchor">#</a> Types</h4> <table><thead><tr><th>Type</th> <th>UI</th> <th>Comment</th></tr></thead> <tbody><tr><td>string</td> <td>input text</td> <td></td></tr> <tr><td>string[]</td> <td>list of input text</td> <td></td></tr> <tr><td>text</td> <td>textarea</td> <td></td></tr> <tr><td>bool</td> <td>checkbox</td> <td></td></tr> <tr><td>number</td> <td>input text</td> <td></td></tr> <tr><td>date_ISO8601</td> <td>date picker</td> <td>Date must be in ISO8601 format</td></tr> <tr><td>contact</td> <td>-</td> <td>Contains fields related to a contact</td></tr> <tr><td>domain</td> <td>-</td> <td>Contains fields related to a domain</td></tr></tbody></table> <h4 id="constraints"><a href="#constraints" class="header-anchor">#</a> Constraints</h4> <table><thead><tr><th>Constraint</th> <th>UI</th> <th>Comment</th></tr></thead> <tbody><tr><td>required</td> <td>red star</td> <td>Field is mandatory</td></tr> <tr><td>readonly</td> <td>readonly</td> <td>Field can't be changed</td></tr> <tr><td>eq</td> <td>-</td> <td>Field must be equal to $value</td></tr> <tr><td>ne</td> <td>-</td> <td>Field must be differents from $value</td></tr> <tr><td>gt</td> <td>-</td> <td>Field must be greater than a $value</td></tr> <tr><td>lt</td> <td>-</td> <td>Field must be lower than $value</td></tr> <tr><td>maxlength</td> <td>-</td> <td>Size of field must be lower than $value</td></tr> <tr><td>minlength</td> <td>-</td> <td>Size of field must be greater than $value</td></tr> <tr><td>between</td> <td>input range</td> <td>Field must be between $value1 and $value2</td></tr> <tr><td>contains</td> <td>select element</td> <td>Field must be equals to one of $values</td></tr> <tr><td>notcontains</td> <td>-</td> <td>Field mustn't be equals  to one of $values</td></tr> <tr><td>empty</td> <td>-</td> <td>Field must be empty</td></tr> <tr><td>notempty</td> <td>-</td> <td>Field must not be empty</td></tr> <tr><td>match</td> <td>-</td> <td>Field must be match the $regexp</td></tr> <tr><td>shouldbetrue</td> <td>checkbox</td> <td>Field must be checked</td></tr></tbody></table></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/api-domain-ovh/fr/order.html" class="prev">
+        Commander un nom de domaine
+      </a></span> <span class="next"><a href="/api-domain-ovh/fr/domain.html">
+        Gestion d'un domain
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/api-domain-ovh/assets/js/app.3acf7551.js" defer></script><script src="/api-domain-ovh/assets/js/2.11db361c.js" defer></script><script src="/api-domain-ovh/assets/js/16.945cabfc.js" defer></script>
+  </body>
+</html>
