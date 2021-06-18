@@ -1,38 +1,38 @@
 # Commander un nom de domaine 
 
-## L'api de commande
+## L'API de commande
 
-Afin de commander vos noms de domaine, voici une présentation des différents objets que tu vas devoir manipuler au travers de l'API.
+Afin de commander vos noms de domaine, voici une présentation des différents objets que vous allez devoir manipuler au travers de l'API.
 
 
 ### Le *panier*
 
-L'objet *cart* de l'api représente ce panier. Différentes actions sont disponible :
+L'objet *cart* de l'API représente ce panier. Différentes actions sont disponible :
 
 - Le créer : Peut être fait sans être authentifié
 - L'assigner à un nic : Indispensable pour valider un panier
 - Y ajouter des produits
 - Demander un aperçu
-- Demander une validation en "dry-run" (sans générer de BC)
-- Générer un BC
+- Demander une validation en "dry-run" (sans générer de bon de commande)
+- Générer un bon de commande
 
-Les apis commencent par /order/cart/
+Les APIs concernées commencent par `/order/cart/`
 
 
 ### Les *produits*
 
 Un **item** représente un produit qui peut être ajouter dans un panier.
 Il possède 
-- une api pour récupérer la disponibilité du produit
-- des apis pour ajouter/modifier/supprimer un produit dans le panier
-- une api pour récupérer les configurations requises afin de valider le panier
-- des apis pour ajouter/supprimer une configuration associé au produit.
+- une API pour récupérer la disponibilité du produit
+- des APIs pour ajouter/modifier/supprimer un produit dans le panier
+- une API pour récupérer les configurations requises afin de valider le panier
+- des APIs pour ajouter/supprimer une configuration associé au produit.
 
-Les apis commencent par /order/cart/{cartID}/item/
+Les APIs commencent par /order/cart/{cartID}/item/
 
 ### Workflow
 
-Globalement, la commande d'un produit OVHcloud via l'api se fera toujours au travers de ces étapes:
+Globalement, la commande d'un produit OVHcloud via l'API se fera toujours au travers de ces étapes:
 
 1. Créer un panier
 1. Récupérer les offres disponible pour le produit souhaité
@@ -46,7 +46,7 @@ Globalement, la commande d'un produit OVHcloud via l'api se fera toujours au tra
 
 ## Création du panier
 
-La première étape de commande d'un nom de domaine est la création du panier avec l'api suivante : 
+La première étape de commande d'un nom de domaine est la création du panier avec l'API suivante : 
 
 `POST /order/cart`
 
@@ -88,7 +88,6 @@ cart = client.post("/order/cart", ovhSubsidiary="FR", description="", _need_auth
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart')
   .then(function (cart) {
     // Cart
@@ -118,7 +117,7 @@ client.requestPromised('POST', '/order/cart')
 
 :::
 
-Garder la propriété cartId de côté, elle te servira tout au long des étapes suivantes.
+Gardez la propriété cartId de côté, elle nous servira tout au long des étapes suivantes.
 
 ## Récupération des offres disponibles
 
@@ -310,7 +309,6 @@ item = client.post("/order/cart/{0}/domain".format(cart.get("cartId")), **itemDa
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart/$cartID/domain', {
       'domain': 'foo.fr',
       // Optional
@@ -396,7 +394,7 @@ Met la valeur itemId de côté, tu en auras besoin pour la suite.
 
 ## Résumé du panier
 
-Cette étape te permet d'avoir le résumé de votre panier. Cette étape est optionnel, elle ne valide pas la consistence ou les configurations du panier. Elle te donne seulement un aperçu de ton panier.
+Cette étape nous permet d'avoir le résumé de votre panier. Cette étape est optionnel, elle ne valide pas la consistence ou les configurations du panier. Elle nous donne seulement un aperçu de ton panier.
 
 `GET /order/cart/{cartID}/summary`
 
@@ -674,7 +672,7 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
 
 Sans rentrer dans les détails de ce payload, il y a certaines choses à retenir :
 
-- L'ajout d'un item dans le panier produit 3 lignes de details sur le BC
+- L'ajout d'un item dans le panier produit 3 lignes de details sur le bon de commande
 - Une ligne de detail est ajouté par promotion (detailType = GIFT)
 - L'objet prices représente le total du panier avec ou sans taxe.
 - La liste des contrats est vide lors du résumé. Elle sera remplit lors de la validation ou de la création du bon de commande.
@@ -712,7 +710,6 @@ itemId | true | "" | L'id de l'item inséré dans le cart
 ::: tab Go
 
 ```go
-
 type RequiredConfiguration struct {
   Label string `json:"label"`
   Required bool `json:"required"`
@@ -785,8 +782,8 @@ Voici la liste exhaustive des différentes configurations requises pour un nom d
 
 Label | Type | Obligatoire | Description
 --------- | -------  | ------- | ---------
-ADMIN_ACCOUNT | string | Non | Représente le nic ovh qui pourra administrer le domaine et sera associé en tant qu'admin sur le whois. Si vide, le nic connecté à l'api sera pris par default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
-TECH_ACCOUNT | string | Non | Représente le nic ovh qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le whois. Si vide, le nic connecté à l'api sera pris pas default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
+ADMIN_ACCOUNT | string | Non | Représente le nic ovh qui pourra administrer le domaine et sera associé en tant qu'admin sur le whois. Si vide, le nic connecté à l'API sera pris par default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
+TECH_ACCOUNT | string | Non | Représente le nic ovh qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le whois. Si vide, le nic connecté à l'API sera pris pas default. La valeur attendu doit être un nic valide sous la forme xxx-ovh
 OWNER_CONTACT | /me/contact ou /domain/contact | Non | Représente le propriétaire du nom de domaine. Si vide, le nicadmin sera pris en modèle pour créer un contact. La valeur attendu est une chaine de charactère sous la forme /me/contact/1234 ou /domain/contact/12345
 DOMAIN_CONFIG | json | Relatif à l'extension | Très rarement présent, il est lié à certaines contraintes de tld spécifique (gov.uk par exemple).
 ACCEPT_CONDITIONS | bool | Oui si présent | Indique que l'extension possède des conditions particulière à l'obtention de l'extension.
@@ -801,14 +798,14 @@ OWNER_LEGAL_AGE | bool | Oui | Toujours présent, il s'agit d'une configuration 
 
 Attention, cette API est designé pour répondre au besoin de la plupart des produits OVH. Cependant, les noms de domaine ont la particularité d'avoir des règles beaucoup plus complexe concernant la valeur de certaines configuration. Notamment sur les configurations ADMIN_ACCOUNT, OWNER_CONTACT ou encore DOMAIN_CONFIG. Celle-ci étant lié à des règles de gestion de la part des registres.
 
-Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à berlin. Or cette api est en incapacité de décrire ce genre de règle.
+Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à berlin. Or cette API est en incapacité de décrire ce genre de règle.
 
 Pour cela, il existe d'autres API afin de décrire les informations nécessaire à un nom de domaine de manière précise. Ces APIs étant un peu complexe et utilisé également en dehors de la commande (comme pour la mise à jour d'un contact), elles ont le droit à leur propre section : [Gestion des règles](rules)
 ::: 
 
 ::: warning  Spécificité de la configuration OWNER_CONTACT
 
-Ici, le OWNER_CONTACT représente une "recourse" API, à savoir /me/contact ou plus précisement /domain/contact. Les apis permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
+Ici, le OWNER_CONTACT représente une "recourse" API, à savoir /me/contact ou plus précisement /domain/contact. Les APIs permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
 
 ::: 
 
@@ -830,7 +827,6 @@ itemId | true | "" | L'id de l'item inséré dans le cart
 ::: tab Go
 
 ```go
-
 type Configuration struct {
   ID int64 `json:"id"`
   Label string `json:"label"`
@@ -848,7 +844,7 @@ var data := ConfigurationPayload{
   Label: "OWNER_CONTACT",
   Value: "/me/contact/1234"
 }
-err := client.Post("/order/cart/$cartID/item/$itemID/configuration", ,&configuration)
+err := client.Post("/order/cart/$cartID/item/$itemID/configuration", data ,&configuration)
 ```
 :::
 
@@ -868,7 +864,6 @@ item = client.post("/order/cart/{0}/item/{1}/configuration".format(cart.get("car
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart/$cartID/item/$itemID/configuration', {
       'label': 'OWNER_CONTACT',
       'value': '/me/contact/1234'
@@ -918,7 +913,7 @@ TODO
 
 ## Gestion du panier
 
-A tout moment, il est bien entendu possible de visualiser et manipuler le panier avec les api suivantes.
+A tout moment, il est bien entendu possible de visualiser et manipuler le panier avec les API suivantes.
 
 #### Récupération des items
 
@@ -954,4 +949,216 @@ waiveRetractationPeriod | true | "" | Requis pour un nom de domaine. Il représe
 
 ## Paiement du bon de commande
 
-Le gestion des bons de commande se font via les apis /me/order/{orderId} et ne seront pas explicité dans cette partie.
+Si vous n'avez pas payez le bon de commande automatiquement lors de la précédente étape, vous aurez besoin de manipuler les apis de gestion des bons de commande. Bien qu'il existe de nombreuses apis en relation avec les moyens de paiement et la gestion des bons de commande, nous partirons du principe par la suite qu'au moins un moyen de paiement est enregistré sur votre compte.
+
+### Récupération des moyens de paiement disponible
+
+Dans un premier temps, récupérons les paiments disponible pour le bon de commande effectué plus tôt.
+
+[`GET /me/order/{orderId}/availableRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/%7BorderId%7D/availableRegisteredPaymentMean#GET)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+
+:::: tabs
+
+::: tab Go
+
+```go
+type RegisteredPaymentMean struct {
+   PaymentMean string `json:"paymentMean"`
+} 
+/* Valeurs possibles pour PaymentMean :
+  "CREDIT_CARD"
+  "CURRENT_ACCOUNT"
+  "DEFERRED_PAYMENT_ACCOUNT"
+  "ENTERPRISE"
+  "INTERNAL_TRUSTED_ACCOUNT"
+  "PAYPAL"
+  "bankAccount"
+  "creditCard"
+  "deferredPaymentAccount"
+  "fidelityAccount"
+  "ovhAccount"
+  "paypal"
+*/
+
+
+var result []RegisteredPaymentMean
+
+err := client.Get("/me/order/$orderId/availableRegisteredPaymentMean",&result)
+```
+:::
+
+::: tab Python
+
+```python
+item = client.get("/me/order/{0}/availableRegisteredPaymentMean".format(orderId), **itemData)
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('GET', '/me/order/$orderId/availableRegisteredPaymentMean')
+  .then(function (result) {
+    // result
+  })
+  .catch(function (err) {
+    //Return an error object like this {error: statusCode, message: message}
+  });
+
+```
+
+:::
+
+::::
+
+
+::: details Response
+
+```json
+[
+  {
+    "paymentMean": "bankAccount"
+  }
+]
+```
+:::
+
+
+### Paiement du bon de commande
+
+Le pairement du bon de commande se fait via l'api ci-dessous. Celle-ci ne retourne aucun résultat mais le status 200 indique une réussite.
+
+[`POST /me/order/{orderId}/payWithRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/{orderId}/payWithRegisteredPaymentMean#POST)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+paymentMean | true | "" | Moyen de paiement récupéré lors de la [récupération des moyens de paiement disponible](order#recuperation-des-moyens-de-paiement-disponible)
+paymentMeanId | false | "" | 	L'identifiant du moyen de paiment est mandatory poour les valeurs bankAccount, creditCard and paypal 
+
+:::: tabs
+
+::: tab Go
+
+```go
+data := map[string]string {
+  "paymentMean": "fidelityAccount",
+}
+
+err := client.Post("/me/order/{orderId}/payWithRegisteredPaymentMean", data, nil)
+```
+:::
+
+::: tab Python
+
+```python
+import ovh
+
+client = ovh.Client()
+
+itemData = {
+  "paymentMean": "fidelityAccount"
+}
+
+result = client.post("/me/order/{0}/payWithRegisteredPaymentMean".format(orderId), **itemData)
+
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('POST', '/order/cart', {
+  'paymentMean': 'fidelityAccount'
+}).then
+  .then(function () {
+  })
+  .catch(function (err) {
+    // Return an error object
+  });
+
+```
+
+:::
+
+::::
+
+::: details Response
+
+```json
+// null
+```
+
+:::
+
+
+## Suivis du bon de commande
+
+L'api suivante permet de connaître l'état d'un bon de commande.
+
+[`GET /me/order/{orderId}/status`](https://api.ovh.com/console/#/me/order/{orderId}/status#GET)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+
+:::: tabs
+
+::: tab Go
+
+```go
+type orderStatus string 
+/* Valeurs possibles pour orderStatusEnum :
+    "cancelled"
+    "cancelling"
+    "checking"
+    "delivered"
+    "delivering"
+    "documentsRequested"
+    "notPaid"
+    "unknown"
+*/
+var result orderStatus
+
+err := client.Get("/me/order/$orderId/status",&result)
+```
+:::
+
+::: tab Python
+
+```python
+result = client.get("/me/order/{0}/status".format(orderId))
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('GET', '/me/order/$orderId/status')
+  .then(function (result) {
+    // result
+  })
+  .catch(function (err) {
+    //Return an error object like this {error: statusCode, message: message}
+  });
+
+```
+
+:::
+
+::::
+
+
+::: details Response
+
+```json
+"notPaid"
+```
+:::

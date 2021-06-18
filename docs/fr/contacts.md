@@ -1,28 +1,28 @@
 # Gestion des contacts
 
-La gestion des contacts est un point central de la gestion des noms de domaines. 
+La gestion des contacts est un point central de la gestion des noms de domaine. 
 
 
 ## Introduction
 
 Avant d'aller plus loin, il est important de différencier les deux différents type de contacts.
 
-D'un côté, il y a les *nic* OVH d'un service OVH (ici domain). 
+D'un côté, il y a les *nic* OVH d'un service OVH (ici domaine). 
 
 ### Nichandle OVH
 
 Il est possible, à travers eux, de se connecter au manager OVH ou à l'api et sont divisés en trois sous-types différents :
 
-- Le Nic Admin : C'est l'administrateur du domaine, il possède la possibilité de faire toute les actions possible sur un domain
+- Le Nic Admin : C'est l'administrateur du domaine, il possède la possibilité de faire toute les actions possible sur un domaine
 - Le Nic Tech : Ce nic, désigné par le NicAdmin pour un service, a la possibilité de modifier des données techniques sur le service
 - Le Nic Billing : C'est le responsable facturation du service.  
 
-Par défault, un NicAdmin est également Tech et Billing d'un service.
+Par défaut, un NicAdmin est également Tech et Billing d'un service.
 
 
 ### Contact domain
 
-Ces contact sont ceux présents dans le whois ou le fichier RDAP.
+Ces contacts sont ceux présents dans le whois ou le fichier RDAP.
 Nous allons rester sur le cas des (n)gtlds. Les cctlds ayant parfois des particularités que nous n'évoquerons pas ici pour des raisons de simplicité (et que l'api vous cache le plus possible de toute façon).
 
 
@@ -69,12 +69,18 @@ Cependant, pour une utilisation de contact dans un contexte de noms de domaine, 
 Les apis /domain/contacts apportent deux principales fonctionnalités
 
 - L'ajout de champs supplémentaire nécessaire à l'obtention de certaines extensions
-- Manipulation de "modèles" 
+- Manipulation de "modèles" : Elle permet d'éviter de créer plusieurs fois le même contact favorisant sa réutilisation
 
 
-### Règles
+### Récupération des contacts existants
+
+
+`GET /domains/contacts`
+
 
 ### Création d'un contact
+
+L'api /domains/contacts ne permet que de créer des contacts modèles. 
 
 Une des premières fonctionnalités ajoutés par rapport aux apis /me/contact et la création de contact dit "modèle" ou "template".
 Avec l'api suivante, vous créé un modèle

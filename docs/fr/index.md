@@ -1,13 +1,13 @@
 # Introduction
 
-Bienvenue sur la documentation de l'api domaine OVHcloud
+Bienvenue sur la documentation de l'AP domaine OVHcloud
 
 ## Pré-requis à cette documentation
 
 Afin de continuer à lire cette documentation, il t'est nécessaire de prendre connaissance en premier lieu de ces documentations ci-dessous. Elles t'aideront à mettre en place ton environnemnt ainsi que de comprendre le fonctionnement de la signature de tes futures requêtes.
 
-- [Api premier pas](https://docs.ovh.com/fr/api/api-premiers-pas/)
-- [First step with ovh api](https://docs.ovh.com/gb/en/customer/first-steps-with-ovh-api/)
+- [Premiers pas avec les API OVHcloud](https://docs.ovh.com/fr/api/api-premiers-pas/)
+- [First Steps with the API](https://docs.ovh.com/gb/en/customer/first-steps-with-ovh-api/)
 
 
 ## SDK disponibles
@@ -85,7 +85,7 @@ var client = require('ovh')({
 
 Ci-dessous un glossaire des termes employés dans cette documentation.
 
-- Registre : Organisme détenteur d'une extension. Par exemple, le .fr appartient à l'Anifc, le .com et le .net à Verisign.
-- Registrar : Revendeur de nom de domaines. Le registre passe par un registrar afin de vendre son nom de domaine. OVHcloud est un registar.
-- Registrant : Propriétaire d'un nom de domaine. Il porte la responsabilité légal de l'utilisation du nom de domaine et possède tout les droits sur le nom de domaine.
+- Registre : Organisme détenteur d'une extension. Par exemple, le .fr appartient à l'Afnic, le .com et le .net à Verisign.
+- Registrar : Revendeur de noms de domaines. Le registre passe par un registrar afin de vendre son nom de domaine. OVHcloud est un registar.
+- Registrant : Propriétaire d'un nom de domaine. Il porte la responsabilité légale de l'utilisation du nom de domaine et possède tout les droits sur le nom de domaine.
 - gtld (Generic Top Level Domain) : Domain d
