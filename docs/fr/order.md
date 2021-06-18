@@ -88,7 +88,6 @@ cart = client.post("/order/cart", ovhSubsidiary="FR", description="", _need_auth
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart')
   .then(function (cart) {
     // Cart
@@ -118,7 +117,7 @@ client.requestPromised('POST', '/order/cart')
 
 :::
 
-Gardez la propriété cartId de côté, elle te servira tout au long des étapes suivantes.
+Gardez la propriété cartId de côté, elle nous servira tout au long des étapes suivantes.
 
 ## Récupération des offres disponibles
 
@@ -310,7 +309,6 @@ item = client.post("/order/cart/{0}/domain".format(cart.get("cartId")), **itemDa
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart/$cartID/domain', {
       'domain': 'foo.fr',
       // Optional
@@ -396,7 +394,7 @@ Met la valeur itemId de côté, tu en auras besoin pour la suite.
 
 ## Résumé du panier
 
-Cette étape te permet d'avoir le résumé de votre panier. Cette étape est optionnel, elle ne valide pas la consistence ou les configurations du panier. Elle te donne seulement un aperçu de ton panier.
+Cette étape nous permet d'avoir le résumé de votre panier. Cette étape est optionnel, elle ne valide pas la consistence ou les configurations du panier. Elle nous donne seulement un aperçu de ton panier.
 
 `GET /order/cart/{cartID}/summary`
 
@@ -712,7 +710,6 @@ itemId | true | "" | L'id de l'item inséré dans le cart
 ::: tab Go
 
 ```go
-
 type RequiredConfiguration struct {
   Label string `json:"label"`
   Required bool `json:"required"`
@@ -830,7 +827,6 @@ itemId | true | "" | L'id de l'item inséré dans le cart
 ::: tab Go
 
 ```go
-
 type Configuration struct {
   ID int64 `json:"id"`
   Label string `json:"label"`
@@ -848,7 +844,7 @@ var data := ConfigurationPayload{
   Label: "OWNER_CONTACT",
   Value: "/me/contact/1234"
 }
-err := client.Post("/order/cart/$cartID/item/$itemID/configuration", ,&configuration)
+err := client.Post("/order/cart/$cartID/item/$itemID/configuration", data ,&configuration)
 ```
 :::
 
@@ -868,7 +864,6 @@ item = client.post("/order/cart/{0}/item/{1}/configuration".format(cart.get("car
 
 
 ```javascript
-
 client.requestPromised('POST', '/order/cart/$cartID/item/$itemID/configuration', {
       'label': 'OWNER_CONTACT',
       'value': '/me/contact/1234'
@@ -954,4 +949,216 @@ waiveRetractationPeriod | true | "" | Requis pour un nom de domaine. Il représe
 
 ## Paiement du bon de commande
 
-Le gestion des bons de commande se font via les APIs /me/order/{orderId} et ne seront pas explicité dans cette partie.
+Si vous n'avez pas payez le bon de commande automatiquement lors de la précédente étape, vous aurez besoin de manipuler les apis de gestion des bons de commande. Bien qu'il existe de nombreuses apis en relation avec les moyens de paiement et la gestion des bons de commande, nous partirons du principe par la suite qu'au moins un moyen de paiement est enregistré sur votre compte.
+
+### Récupération des moyens de paiement disponible
+
+Dans un premier temps, récupérons les paiments disponible pour le bon de commande effectué plus tôt.
+
+[`GET /me/order/{orderId}/availableRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/%7BorderId%7D/availableRegisteredPaymentMean#GET)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+
+:::: tabs
+
+::: tab Go
+
+```go
+type RegisteredPaymentMean struct {
+   PaymentMean string `json:"paymentMean"`
+} 
+/* Valeurs possibles pour PaymentMean :
+  "CREDIT_CARD"
+  "CURRENT_ACCOUNT"
+  "DEFERRED_PAYMENT_ACCOUNT"
+  "ENTERPRISE"
+  "INTERNAL_TRUSTED_ACCOUNT"
+  "PAYPAL"
+  "bankAccount"
+  "creditCard"
+  "deferredPaymentAccount"
+  "fidelityAccount"
+  "ovhAccount"
+  "paypal"
+*/
+
+
+var result []RegisteredPaymentMean
+
+err := client.Get("/me/order/$orderId/availableRegisteredPaymentMean",&result)
+```
+:::
+
+::: tab Python
+
+```python
+item = client.get("/me/order/{0}/availableRegisteredPaymentMean".format(orderId), **itemData)
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('GET', '/me/order/$orderId/availableRegisteredPaymentMean')
+  .then(function (result) {
+    // result
+  })
+  .catch(function (err) {
+    //Return an error object like this {error: statusCode, message: message}
+  });
+
+```
+
+:::
+
+::::
+
+
+::: details Response
+
+```json
+[
+  {
+    "paymentMean": "bankAccount"
+  }
+]
+```
+:::
+
+
+### Paiement du bon de commande
+
+Le pairement du bon de commande se fait via l'api ci-dessous. Celle-ci ne retourne aucun résultat mais le status 200 indique une réussite.
+
+[`POST /me/order/{orderId}/payWithRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/{orderId}/payWithRegisteredPaymentMean#POST)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+paymentMean | true | "" | Moyen de paiement récupéré lors de la [récupération des moyens de paiement disponible](order#recuperation-des-moyens-de-paiement-disponible)
+paymentMeanId | false | "" | 	L'identifiant du moyen de paiment est mandatory poour les valeurs bankAccount, creditCard and paypal 
+
+:::: tabs
+
+::: tab Go
+
+```go
+data := map[string]string {
+  "paymentMean": "fidelityAccount",
+}
+
+err := client.Post("/me/order/{orderId}/payWithRegisteredPaymentMean", data, nil)
+```
+:::
+
+::: tab Python
+
+```python
+import ovh
+
+client = ovh.Client()
+
+itemData = {
+  "paymentMean": "fidelityAccount"
+}
+
+result = client.post("/me/order/{0}/payWithRegisteredPaymentMean".format(orderId), **itemData)
+
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('POST', '/order/cart', {
+  'paymentMean': 'fidelityAccount'
+}).then
+  .then(function () {
+  })
+  .catch(function (err) {
+    // Return an error object
+  });
+
+```
+
+:::
+
+::::
+
+::: details Response
+
+```json
+// null
+```
+
+:::
+
+
+## Suivis du bon de commande
+
+L'api suivante permet de connaître l'état d'un bon de commande.
+
+[`GET /me/order/{orderId}/status`](https://api.ovh.com/console/#/me/order/{orderId}/status#GET)
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+orderId | true | "" | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)
+
+:::: tabs
+
+::: tab Go
+
+```go
+type orderStatus string 
+/* Valeurs possibles pour orderStatusEnum :
+    "cancelled"
+    "cancelling"
+    "checking"
+    "delivered"
+    "delivering"
+    "documentsRequested"
+    "notPaid"
+    "unknown"
+*/
+var result orderStatus
+
+err := client.Get("/me/order/$orderId/status",&result)
+```
+:::
+
+::: tab Python
+
+```python
+result = client.get("/me/order/{0}/status".format(orderId))
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('GET', '/me/order/$orderId/status')
+  .then(function (result) {
+    // result
+  })
+  .catch(function (err) {
+    //Return an error object like this {error: statusCode, message: message}
+  });
+
+```
+
+:::
+
+::::
+
+
+::: details Response
+
+```json
+"notPaid"
+```
+:::
