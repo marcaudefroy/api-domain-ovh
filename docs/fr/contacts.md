@@ -72,6 +72,12 @@ Les apis /domain/contacts apportent deux principales fonctionnalités
 - Manipulation de "modèles" : Elle permet d'éviter de créer plusieurs fois le même contact favorisant sa réutilisation
 
 
+## Type
+
+| Champs            | type               | Comment                                                   |
+|-------------------|--------------------|-----------------------------------------------------------|
+| id | long | Identifiant unique                       |
+
 ### Récupération des contacts existants
 
 
@@ -92,4 +98,5 @@ api POST /domains/contact
 
 api PUT /domains/contact
 
+### Changement de propriétaire
 

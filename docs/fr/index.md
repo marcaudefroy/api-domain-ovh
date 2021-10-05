@@ -1,6 +1,6 @@
 # Introduction
 
-Bienvenue sur la documentation de l'AP domaine OVHcloud
+Bienvenue sur la documentation de l'API domaine OVHcloud
 
 ## Pré-requis à cette documentation
 

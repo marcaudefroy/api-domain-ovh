@@ -72,8 +72,14 @@ module.exports = ctx => ({
                         title: "Commander un nom de domaine",
                         path: '/fr/order',
                     },
-                    {
+                    { <<
+                        << << < HEAD
+                        title: "Règles d'éligibilité",
+                        ===
+                        === =
                         title: "Règles sur un domain",
+                        >>>
+                        >>> > 08 fff2e...add payment documentation
                         path: '/fr/rules',
                     },
                     {
