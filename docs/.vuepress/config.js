@@ -87,6 +87,11 @@ module.exports = ctx => ({
                         path: '/fr/contacts',
                     },
                     {
+                        title: "Whois",
+                        collapsable: false,
+                        path: '/fr/whois',
+                    },
+                    {
                         title: "Gestion des opérations",
                         collapsable: false,
                         path: '/fr/operations',

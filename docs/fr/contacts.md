@@ -38,27 +38,27 @@ Un prestataire d'un client final ne doit jamais se mettre en tant que contact pr
 
 :::
 
-### Liens entre nic OVH et contacts whois
+### Différence entre nic OVH et contacts whois
 
 Il existe un lien fort entre les nic OVH et les contacts whois/RDAP, le nic OVH Admin et le nic OVH Tech sont synchronisés avec les contacts whois admin et tech. Lors d'une modification d'information sur le nic OVH Admin, celle-ci est synchronisé avec le contact admin sur l'ensemble des noms de domains.
 
 Seul le contact registrant n'est pas lié à un nic OVH.
 
 
-## Gestion des Nics admin et tech
+## Nics Admin et Tech
 
-### Création d'un nouveau nic
+## Création d'un nouveau nic
 
 ### Règles
 
 apis /newAccount
 
-### Modification d'un nic
+## Modification d'un nic
 
 api /newAccount/rules
 
 
-## Gestion du contact propriétaire
+## Contact propriétaire
 
 Un contact propriétaire est représenté à la fois par les routes /me/contact et /domain/contacts.
 Historiquement, toutes les actions étaient faisable via /me/contact. Certaines restrictions lié uniquement au métier du nom de domaine nous as contraint de déployer une nouvelle api spécifique. Cependant les apis /domain/contacts représente un "superset" aux apis /me/contact. 
@@ -72,7 +72,7 @@ Les apis /domain/contacts apportent deux principales fonctionnalités
 - Manipulation de "modèles" : Elle permet d'éviter de créer plusieurs fois le même contact favorisant sa réutilisation
 
 
-## Type
+### Type
 
 | Champs            | type               | Comment                                                   |
 |-------------------|--------------------|-----------------------------------------------------------|
@@ -84,7 +84,7 @@ Les apis /domain/contacts apportent deux principales fonctionnalités
 `GET /domains/contacts`
 
 
-### Création d'un contact
+## Création d'un contact
 
 L'api /domains/contacts ne permet que de créer des contacts modèles. 
 
@@ -94,9 +94,10 @@ Plutôt que de création de contact, nous devrions parler de contact modèle. En
 
 api POST /domains/contact
 
-### Modification d'un contact
+## Modification d'un contact
 
 api PUT /domains/contact
 
-### Changement de propriétaire
+## Changement de contact propriétaire
+
 

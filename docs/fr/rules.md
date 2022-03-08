@@ -888,21 +888,1581 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
 #### Création
 
 ::: details création
+
+```json
+{
+  "and": [
+    {
+      "label": "OWNER_CONTACT",
+      "type": "contact",
+      "fields": {
+        "and": [
+          {
+            "label": "address.city",
+            "type": "string",
+            "description": "Represents the city of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.country",
+            "type": "string",
+            "description": "Represents the country of the owner contact.",
+            "placeholder": "FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "AC",
+                  "AD",
+                  "AE",
+                  "AF",
+                  "AG",
+                  "...",
+                  "ZA",
+                  "ZM",
+                  "ZW"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "email",
+            "type": "string",
+            "description": "Represents the email of the owner contact.",
+            "placeholder": "lorem@ovh.com",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "firstName",
+            "type": "string",
+            "description": "Represents the firstname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "language",
+            "type": "string",
+            "description": "Represents the langage of the owner contact.",
+            "placeholder": "fr_FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "fr_FR",
+                  "pl_PL",
+                  "de_DE",
+                  "es_ES",
+                  "en_GB",
+                  "it_IT",
+                  "pt_PT",
+                  "nl_NL",
+                  "cs_CZ",
+                  "en_IE",
+                  "lt_LT",
+                  "fi_FI",
+                  "fr_SN",
+                  "fr_TN",
+                  "fr_MA",
+                  "en_AU",
+                  "en_CA",
+                  "fr_CA",
+                  "en_US",
+                  "es_ES"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "lastName",
+            "type": "string",
+            "description": "Represents the lastname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "legalForm",
+            "type": "string",
+            "description": "Represents the legal status of owner.",
+            "placeholder": "individual",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "association",
+                  "corporation",
+                  "individual",
+                  "other"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.line1",
+            "type": "string",
+            "description": "Represents the address of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "organisationName",
+            "type": "string",
+            "description": "Represents the organisation of the owner contact",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "ne",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "phone",
+            "type": "string",
+            "description": "Represents the phone of the owner contact.",
+            "placeholder": "+33.612345678",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.zip",
+            "type": "string",
+            "description": "Represents the zip of the owner contact.",
+            "placeholder": "12345",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "address.country",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "notcontains",
+                        "values": [
+                          "IE",
+                          "AZ",
+                          "DJ",
+                          "LA",
+                          "CI",
+                          "AN",
+                          "HK",
+                          "BO",
+                          "PA",
+                          "HN",
+                          "NI",
+                          "SV",
+                          "CO"
+                        ]
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          }
+        ],
+        "constraints": []
+      },
+      "description": "rule related to the owner domain",
+      "constraints": [
+        {
+          "operator": "required"
+        }
+      ]
+    },
+    {
+      "label": "OWNER_LEGAL_AGE",
+      "type": "bool",
+      "description": "The owner must be of legal age to acquire a domain name.",
+      "placeholder": "true",
+      "constraints": []
+    }
+  ],
+  "constraints": []
+}
+
+```
 ::: 
 #### Transfer
 
 ::: details transfer
+
+```json
+{
+  "and": [
+    {
+      "label": "OWNER_CONTACT",
+      "type": "contact",
+      "fields": {
+        "and": [
+          {
+            "label": "address.city",
+            "type": "string",
+            "description": "Represents the city of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.country",
+            "type": "string",
+            "description": "Represents the country of the owner contact.",
+            "placeholder": "FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "AC",
+                  "AD",
+                  "AE",
+                  "AF",
+                  "...",
+                  "ZA",
+                  "ZM",
+                  "ZW"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "email",
+            "type": "string",
+            "description": "Represents the email of the owner contact.",
+            "placeholder": "lorem@ovh.com",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "firstName",
+            "type": "string",
+            "description": "Represents the firstname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "language",
+            "type": "string",
+            "description": "Represents the langage of the owner contact.",
+            "placeholder": "fr_FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "fr_FR",
+                  "pl_PL",
+                  "de_DE",
+                  "es_ES",
+                  "en_GB",
+                  "it_IT",
+                  "pt_PT",
+                  "nl_NL",
+                  "cs_CZ",
+                  "en_IE",
+                  "lt_LT",
+                  "fi_FI",
+                  "fr_SN",
+                  "fr_TN",
+                  "fr_MA",
+                  "en_AU",
+                  "en_CA",
+                  "fr_CA",
+                  "en_US",
+                  "es_ES"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "lastName",
+            "type": "string",
+            "description": "Represents the lastname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "legalForm",
+            "type": "string",
+            "description": "Represents the legal status of owner.",
+            "placeholder": "individual",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "association",
+                  "corporation",
+                  "individual",
+                  "other"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.line1",
+            "type": "string",
+            "description": "Represents the address of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "organisationName",
+            "type": "string",
+            "description": "Represents the organisation of the owner contact",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "ne",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "phone",
+            "type": "string",
+            "description": "Represents the phone of the owner contact.",
+            "placeholder": "+33.612345678",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.zip",
+            "type": "string",
+            "description": "Represents the zip of the owner contact.",
+            "placeholder": "12345",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "address.country",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "notcontains",
+                        "values": [
+                          "IE",
+                          "AZ",
+                          "DJ",
+                          "LA",
+                          "CI",
+                          "AN",
+                          "HK",
+                          "BO",
+                          "PA",
+                          "HN",
+                          "NI",
+                          "SV",
+                          "CO"
+                        ]
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          }
+        ],
+        "constraints": []
+      },
+      "description": "rule related to the owner domain",
+      "constraints": [
+        {
+          "operator": "required"
+        }
+      ]
+    },
+    {
+      "label": "OWNER_LEGAL_AGE",
+      "type": "bool",
+      "description": "The owner must be of legal age to acquire a domain name.",
+      "placeholder": "true",
+      "constraints": []
+    }
+  ],
+  "constraints": []
+}
+```
+
 ::: 
 
 
 #### Mise à jour
 
 ::: details mise à jour
+
+```json
+{
+    "label": "OWNER_CONTACT",
+    "type": "contact",
+    "fields": {
+        "and": [
+            {
+                "label": "address.city",
+                "type": "string",
+                "description": "Represents the city of the owner contact.",
+                "placeholder": "lorem",
+                "constraints": [
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "address.country",
+                "type": "string",
+                "description": "Represents the country of the owner contact.",
+                "placeholder": "FR",
+                "constraints": [
+                    {
+                        "operator": "contains",
+                        "values": [
+                            "AC",
+                            "AD",
+                            "AE",
+                            "AF",
+                            "AG",
+                            "...",
+                            "YT",
+                            "ZA",
+                            "ZM",
+                            "ZW"
+                        ]
+                    },
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "address.country",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "contains",
+                                        "values": [
+                                            "AD",
+                                            "AE",
+                                            "AF",
+                                            "AG",
+                                            "WS",
+                                            "YT",
+                                            "ZA",
+                                            "ZM"
+                                        ]
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "email",
+                "type": "string",
+                "description": "Represents the email of the owner contact.",
+                "placeholder": "lorem@ovh.com",
+                "constraints": [
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "email",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "firstName",
+                "type": "string",
+                "description": "Represents the firstname of the owner contact.",
+                "placeholder": "lorem",
+                "constraints": [
+                    {
+                        "operator": "required",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "legalForm",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "eq",
+                                        "value": "individual"
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "and": [
+                                {
+                                    "label": "OWNER_CONTACT",
+                                    "type": "contact",
+                                    "fields": {
+                                        "label": "legalForm",
+                                        "type": "string",
+                                        "constraints": [
+                                            {
+                                                "operator": "eq",
+                                                "value": "individual"
+                                            },
+                                            {
+                                                "operator": "required"
+                                            }
+                                        ]
+                                    },
+                                    "constraints": [
+                                        {
+                                            "operator": "required"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "OWNER_CONTACT",
+                                    "type": "contact",
+                                    "fields": {
+                                        "label": "firstName",
+                                        "type": "string",
+                                        "constraints": [
+                                            {
+                                                "operator": "required"
+                                            }
+                                        ]
+                                    },
+                                    "constraints": [
+                                        {
+                                            "operator": "required"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "constraints": []
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "language",
+                "type": "string",
+                "description": "Represents the langage of the owner contact.",
+                "placeholder": "fr_FR",
+                "constraints": [
+                    {
+                        "operator": "contains",
+                        "values": [
+                            "fr_FR",
+                            "pl_PL",
+                            "de_DE",
+                            "es_ES",
+                            "en_GB",
+                            "it_IT",
+                            "pt_PT",
+                            "nl_NL",
+                            "cs_CZ",
+                            "en_IE",
+                            "lt_LT",
+                            "fi_FI",
+                            "fr_SN",
+                            "fr_TN",
+                            "fr_MA",
+                            "en_AU",
+                            "en_CA",
+                            "fr_CA",
+                            "en_US",
+                            "es_ES"
+                        ]
+                    },
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "lastName",
+                "type": "string",
+                "description": "Represents the lastname of the owner contact.",
+                "placeholder": "lorem",
+                "constraints": [
+                    {
+                        "operator": "required",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "legalForm",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "eq",
+                                        "value": "individual"
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "and": [
+                                {
+                                    "label": "OWNER_CONTACT",
+                                    "type": "contact",
+                                    "fields": {
+                                        "label": "legalForm",
+                                        "type": "string",
+                                        "constraints": [
+                                            {
+                                                "operator": "eq",
+                                                "value": "individual"
+                                            },
+                                            {
+                                                "operator": "required"
+                                            }
+                                        ]
+                                    },
+                                    "constraints": [
+                                        {
+                                            "operator": "required"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "OWNER_CONTACT",
+                                    "type": "contact",
+                                    "fields": {
+                                        "label": "lastName",
+                                        "type": "string",
+                                        "constraints": [
+                                            {
+                                                "operator": "required"
+                                            }
+                                        ]
+                                    },
+                                    "constraints": [
+                                        {
+                                            "operator": "required"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "constraints": []
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "legalForm",
+                "type": "string",
+                "description": "Represents the legal status of owner.",
+                "placeholder": "individual",
+                "constraints": [
+                    {
+                        "operator": "contains",
+                        "values": [
+                            "association",
+                            "corporation",
+                            "individual",
+                            "other"
+                        ]
+                    },
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "legalForm",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "contains",
+                                        "values": [
+                                            "association",
+                                            "corporation",
+                                            "individual",
+                                            "other"
+                                        ]
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "address.line1",
+                "type": "string",
+                "description": "Represents the address of the owner contact.",
+                "placeholder": "lorem",
+                "constraints": [
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "organisationName",
+                "type": "string",
+                "description": "Represents the organisation of the owner contact",
+                "placeholder": "lorem",
+                "constraints": [
+                    {
+                        "operator": "required",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "legalForm",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "ne",
+                                        "value": "individual"
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "readonly",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "organisationName",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "phone",
+                "type": "string",
+                "description": "Represents the phone of the owner contact.",
+                "placeholder": "+33.612345678",
+                "constraints": [
+                    {
+                        "operator": "required"
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            },
+            {
+                "label": "address.zip",
+                "type": "string",
+                "description": "Represents the zip of the owner contact.",
+                "placeholder": "12345",
+                "constraints": [
+                    {
+                        "operator": "required",
+                        "conditions": {
+                            "label": "OWNER_CONTACT",
+                            "type": "contact",
+                            "fields": {
+                                "label": "address.country",
+                                "type": "string",
+                                "constraints": [
+                                    {
+                                        "operator": "notcontains",
+                                        "values": [
+                                            "IE",
+                                            "AZ",
+                                            "DJ",
+                                            "LA",
+                                            "CI",
+                                            "AN",
+                                            "HK",
+                                            "BO",
+                                            "PA",
+                                            "HN",
+                                            "NI",
+                                            "SV",
+                                            "CO"
+                                        ]
+                                    },
+                                    {
+                                        "operator": "required"
+                                    }
+                                ]
+                            },
+                            "constraints": [
+                                {
+                                    "operator": "required"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "operator": "maxlength",
+                        "value": "255"
+                    }
+                ]
+            }
+        ],
+        "constraints": []
+    },
+    "description": "rule related to the owner domain",
+    "constraints": [
+        {
+            "operator": "required"
+        }
+    ]
+}
+
 ::: 
 
 #### Changement de propriétaire
 
 ::: details Changement de propriétaire
+
+```json
+{
+  "label": "OWNER_CONTACT",
+  "type": "contact",
+  "fields": {
+    "and": [
+      {
+        "label": "address.city",
+        "type": "string",
+        "description": "Represents the city of the owner contact.",
+        "placeholder": "lorem",
+        "constraints": [
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "address.country",
+        "type": "string",
+        "description": "Represents the country of the owner contact.",
+        "placeholder": "FR",
+        "constraints": [
+          {
+            "operator": "contains",
+            "values": [
+              "AC",
+              "AD",
+              "AE",
+              "AF",
+              "...",
+              "ZA",
+              "ZM",
+              "ZW"
+            ]
+          },
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "email",
+        "type": "string",
+        "description": "Represents the email of the owner contact.",
+        "placeholder": "lorem@ovh.com",
+        "constraints": [
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "firstName",
+        "type": "string",
+        "description": "Represents the firstname of the owner contact.",
+        "placeholder": "lorem",
+        "constraints": [
+          {
+            "operator": "required",
+            "conditions": {
+              "label": "OWNER_CONTACT",
+              "type": "contact",
+              "fields": {
+                "label": "legalForm",
+                "type": "string",
+                "constraints": [
+                  {
+                    "operator": "eq",
+                    "value": "individual"
+                  },
+                  {
+                    "operator": "required"
+                  }
+                ]
+              },
+              "constraints": [
+                {
+                  "operator": "required"
+                }
+              ]
+            }
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "language",
+        "type": "string",
+        "description": "Represents the langage of the owner contact.",
+        "placeholder": "fr_FR",
+        "constraints": [
+          {
+            "operator": "contains",
+            "values": [
+              "fr_FR",
+              "pl_PL",
+              "de_DE",
+              "es_ES",
+              "en_GB",
+              "it_IT",
+              "pt_PT",
+              "nl_NL",
+              "cs_CZ",
+              "en_IE",
+              "lt_LT",
+              "fi_FI",
+              "fr_SN",
+              "fr_TN",
+              "fr_MA",
+              "en_AU",
+              "en_CA",
+              "fr_CA",
+              "en_US",
+              "es_ES"
+            ]
+          },
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "lastName",
+        "type": "string",
+        "description": "Represents the lastname of the owner contact.",
+        "placeholder": "lorem",
+        "constraints": [
+          {
+            "operator": "required",
+            "conditions": {
+              "label": "OWNER_CONTACT",
+              "type": "contact",
+              "fields": {
+                "label": "legalForm",
+                "type": "string",
+                "constraints": [
+                  {
+                    "operator": "eq",
+                    "value": "individual"
+                  },
+                  {
+                    "operator": "required"
+                  }
+                ]
+              },
+              "constraints": [
+                {
+                  "operator": "required"
+                }
+              ]
+            }
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "legalForm",
+        "type": "string",
+        "description": "Represents the legal status of owner.",
+        "placeholder": "individual",
+        "constraints": [
+          {
+            "operator": "contains",
+            "values": [
+              "association",
+              "corporation",
+              "individual",
+              "other"
+            ]
+          },
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "address.line1",
+        "type": "string",
+        "description": "Represents the address of the owner contact.",
+        "placeholder": "lorem",
+        "constraints": [
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "organisationName",
+        "type": "string",
+        "description": "Represents the organisation of the owner contact",
+        "placeholder": "lorem",
+        "constraints": [
+          {
+            "operator": "required",
+            "conditions": {
+              "label": "OWNER_CONTACT",
+              "type": "contact",
+              "fields": {
+                "label": "legalForm",
+                "type": "string",
+                "constraints": [
+                  {
+                    "operator": "ne",
+                    "value": "individual"
+                  },
+                  {
+                    "operator": "required"
+                  }
+                ]
+              },
+              "constraints": [
+                {
+                  "operator": "required"
+                }
+              ]
+            }
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "phone",
+        "type": "string",
+        "description": "Represents the phone of the owner contact.",
+        "placeholder": "+33.612345678",
+        "constraints": [
+          {
+            "operator": "required"
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      },
+      {
+        "label": "address.zip",
+        "type": "string",
+        "description": "Represents the zip of the owner contact.",
+        "placeholder": "12345",
+        "constraints": [
+          {
+            "operator": "required",
+            "conditions": {
+              "label": "OWNER_CONTACT",
+              "type": "contact",
+              "fields": {
+                "label": "address.country",
+                "type": "string",
+                "constraints": [
+                  {
+                    "operator": "notcontains",
+                    "values": [
+                      "IE",
+                      "AZ",
+                      "DJ",
+                      "LA",
+                      "CI",
+                      "AN",
+                      "HK",
+                      "BO",
+                      "PA",
+                      "HN",
+                      "NI",
+                      "SV",
+                      "CO"
+                    ]
+                  },
+                  {
+                    "operator": "required"
+                  }
+                ]
+              },
+              "constraints": [
+                {
+                  "operator": "required"
+                }
+              ]
+            }
+          },
+          {
+            "operator": "maxlength",
+            "value": "255"
+          }
+        ]
+      }
+    ],
+    "constraints": []
+  },
+  "description": "rule related to the owner domain",
+  "constraints": [
+    {
+      "operator": "required"
+    }
+  ]
+}
+```
+
 ::: 
 
 ### Cas du .berlin
@@ -1254,6 +2814,505 @@ Cela se traduit de cette manière. (Pour une raison de clareté, on a retiré vo
 
 ## APIs
 
+Maintenant que la représentation technique des règles et ses objectifs sont expliqués, passons à la façon de jouer avec au travers des apis.
+Il y en a deux :
+- Une pour récupérer les règles d'eligbilités d'un domain pour une action.
+- Une pour valider des données pour un domain et pour une action.
 ### Get a rule
 
+Commençons par l'API permettant la récupération d'une règle d'éligbilité. Le retour de celle-ci correspond au json vu dans la partie précédente. 
+
+
+`GET /domain/configurationRule`
+
+Parameter | Required | Default | Description
+--------- | -------  | ------- | -----------
+action | true | "" | L'action souhaité (create/transfer/trade/update)
+domain | true | "" | Le nom de domain concerné
+
+:::: tabs
+
+::: tab Go
+
+```go
+var rule Rule
+err := client.Get("/domain/configurationRule?domain=foo.com&action=create", &rule)
+```
+:::
+
+::: tab Python
+
+```python
+rule = client.get("/domain/configurationRule", domain="foo.com", action="create")
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('GET', '/order/cart/$cartID/domain', {
+  'domain': 'foo.com',
+  'action': 'create'
+}).then(function (rule) {
+  // rule
+})
+.catch(function (err) {
+  // Return an error object
+});
+```
+
+:::
+
+::::
+
+::: details Response
+
+```json
+
+{
+  "and": [
+    {
+      "label": "OWNER_CONTACT",
+      "type": "contact",
+      "fields": {
+        "and": [
+          {
+            "label": "address.city",
+            "type": "string",
+            "description": "Represents the city of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.country",
+            "type": "string",
+            "description": "Represents the country of the owner contact.",
+            "placeholder": "FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "AC",
+                  "AD",
+                  "AE",
+                  "AF",
+                  "AG",
+                  "...",
+                  "ZA",
+                  "ZM",
+                  "ZW"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "email",
+            "type": "string",
+            "description": "Represents the email of the owner contact.",
+            "placeholder": "lorem@ovh.com",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "firstName",
+            "type": "string",
+            "description": "Represents the firstname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "language",
+            "type": "string",
+            "description": "Represents the langage of the owner contact.",
+            "placeholder": "fr_FR",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "fr_FR",
+                  "pl_PL",
+                  "de_DE",
+                  "es_ES",
+                  "en_GB",
+                  "it_IT",
+                  "pt_PT",
+                  "nl_NL",
+                  "cs_CZ",
+                  "en_IE",
+                  "lt_LT",
+                  "fi_FI",
+                  "fr_SN",
+                  "fr_TN",
+                  "fr_MA",
+                  "en_AU",
+                  "en_CA",
+                  "fr_CA",
+                  "en_US",
+                  "es_ES"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "lastName",
+            "type": "string",
+            "description": "Represents the lastname of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "eq",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "legalForm",
+            "type": "string",
+            "description": "Represents the legal status of owner.",
+            "placeholder": "individual",
+            "constraints": [
+              {
+                "operator": "contains",
+                "values": [
+                  "association",
+                  "corporation",
+                  "individual",
+                  "other"
+                ]
+              },
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.line1",
+            "type": "string",
+            "description": "Represents the address of the owner contact.",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "organisationName",
+            "type": "string",
+            "description": "Represents the organisation of the owner contact",
+            "placeholder": "lorem",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "legalForm",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "ne",
+                        "value": "individual"
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "phone",
+            "type": "string",
+            "description": "Represents the phone of the owner contact.",
+            "placeholder": "+33.612345678",
+            "constraints": [
+              {
+                "operator": "required"
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          },
+          {
+            "label": "address.zip",
+            "type": "string",
+            "description": "Represents the zip of the owner contact.",
+            "placeholder": "12345",
+            "constraints": [
+              {
+                "operator": "required",
+                "conditions": {
+                  "label": "OWNER_CONTACT",
+                  "type": "contact",
+                  "fields": {
+                    "label": "address.country",
+                    "type": "string",
+                    "constraints": [
+                      {
+                        "operator": "notcontains",
+                        "values": [
+                          "IE",
+                          "AZ",
+                          "DJ",
+                          "LA",
+                          "CI",
+                          "AN",
+                          "HK",
+                          "BO",
+                          "PA",
+                          "HN",
+                          "NI",
+                          "SV",
+                          "CO"
+                        ]
+                      },
+                      {
+                        "operator": "required"
+                      }
+                    ]
+                  },
+                  "constraints": [
+                    {
+                      "operator": "required"
+                    }
+                  ]
+                }
+              },
+              {
+                "operator": "maxlength",
+                "value": "255"
+              }
+            ]
+          }
+        ],
+        "constraints": []
+      },
+      "description": "rule related to the owner domain",
+      "constraints": [
+        {
+          "operator": "required"
+        }
+      ]
+    },
+    {
+      "label": "OWNER_LEGAL_AGE",
+      "type": "bool",
+      "description": "The owner must be of legal age to acquire a domain name.",
+      "placeholder": "true",
+      "constraints": []
+    }
+  ],
+  "constraints": []
+}
+
+```
+
+:::
+
 ### Check a rule
+
+Bien qu'il est tout à fait possible (et encouragé) de vérifier les règles côté client, vous pouvez également utiliser l'API ci-dessous pour vérifier que les données pour une action donnée respecte bien les règles d'éligibilité.
+
+
+[`POST /domain/configurationRule/check`](https://api.ovh.com/console/#/domain/configurationRule/check#POST)
+
+
+En paramètre de requête, nous retrouvons l'action et le domaine souhaité.
+
+
+| Parameter | Required | Default | Description                                      |
+|-----------|----------|---------|--------------------------------------------------|
+| action    | true     | ""      | L'action souhaité (create/transfer/trade/update) |
+| domain    | true     | ""      | Le nom de domain concerné                        |
+
+
+En body de requête, nous retrouvons les objets suivants. 
+
+
+| Body         | Required | Description                                     |
+|--------------|----------|-------------------------------------------------|
+| adminAccount | false    | Objet représentant les données du nic admin     |
+| techAccount  | false    | Objet représentant les données du nic tech      |
+| owner        | false    | Objet représentant les données du contact owner |
+| domain       | false    | Données concernant le domaine                   |
+| extras       | false    | Données additionnelles                          |
+
+Chacun de ses objets est optionnel. Si le moteur de règle a besoin de l'un deux pour vérifier une règle, une erreur sera retourné.
+Une particularité existe cependant pour l'action trade et transfer : si un objet requis est manquant, celui ci sera récupérer depuis le service actuel.
+
+::: tip 
+
+Afin de tester si, sur un domain qui est déjà enregistré sur votre compte, les règles d'éligibilités sont bien respectés. 
+Il suffit de faire appel à cet API sur l'action `update` avec un body vide. Le moteur ira alors cherché les données en interne.
+
+:::
+
+En retour, l'api retourne une 200 si la règle est respecté. A contrario, elle retournera une 400 avec le détails.
+
+:::: tabs
+
+::: tab Go
+
+```go
+
+err := client.Post("/domain/configurationRule?domain=foo.com&action=create", &data)
+
+```
+:::
+
+::: tab Python
+
+```python
+res = client.post("/domain/configurationRule?domain=foo.com&action=create", **data)
+```
+
+::: 
+::: tab JavaScript
+
+
+```javascript
+client.requestPromised('POST', '/domain/configurationRule?domain=foo.com&action=create', data)
+  .then(function () {
+  })
+  .catch(function (err) {
+    //Return an error object like this {error: statusCode, message: message}
+  });
+
+```
+
+:::
+
+::::
+
+
+::: details Response
+
+```json
+// Error HTTP 400
+{
+  "class": "Client::BadRequest::DOMDOCRuleNotRespected",
+  "message": "7 constraints of rules are not respected",
+  "details": {
+    "_date": "2021-10-16 21:51:10.476352775 +0000 UTC",
+    "_id": "mMzaS8iOJ",
+    "_message": "Input data does not respect the rule",
+    "owner.city": "Field \"city\" is required",
+    "owner.country": "Field \"country\" is required",
+    "owner.email": "Field \"email\" is required",
+    "owner.language": "Field \"language\" is required",
+    "owner.legal_form": "Field \"legal_form\" is required",
+    "owner.line1": "Field \"line1\" is required",
+    "owner.phone": "Field \"phone\" is required"
+  }
+}
+```
+
+:::

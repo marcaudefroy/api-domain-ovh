@@ -168,14 +168,23 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
 
 ::: details Response
 
-```json{3,7,10,55}
+```json{3,7,19,64}
 [
   {
     "action": "create", // 1.
     "configurations": [],
     "deliveryTime": "",
     "duration": [
-      "P1Y" // 2.
+      "P1Y", // 2.
+      "P2Y",
+      "P3Y",
+      "P4Y",
+      "P5Y",
+      "P6Y",
+      "P7Y",
+      "P8Y",
+      "P9Y",
+      "P10Y"
     ],
     "offer": "gold",
     "offerId": "fr-create", // 3.
@@ -235,9 +244,35 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
 Ici, il y a 4 valeurs à retenir ici :
 
 1. L'*action* : Celle réalisable sur le domain, ça peut être un transfer ou un create
-2. La *duration* : Ce champs représente l'unite de période sur laquelle il est possible de commander le domande. Pour un domain, P1Y (period 1 year) équivaut à une période d'un an. Seul cette valeur est autorisé pour un domain.
+2. La *duration* : Ce champs représente l'unite de période sur laquelle il est possible de commander le domande. Pour un domain, P1Y (period 1 year) équivaut à une période d'un an, P2Y une période de deux ans, etc...
 3. L'*offerId* : C'est le nom de l'offre qu'il faudra mettre lors de l'ajout du domain dans le panier
 4. Le *pricing-mode* : C'est le détail de l'offre qu'il faudra également mettre lors de l'ajout du domain dans le panier
+
+
+Il y a deux moyens de déterminer le status du domain en fonction du retour de l'API.
+
+La première consiste à avoir un mapping entre le pricing-mode et le status du domain. Voici ci-dessous cette table de mapping exhaustive.
+
+
+Pricing-mode | Description | 
+--------- | -------  | -------  |
+create-default    | Le domain est libre et au prix standard     |
+create-premium  | Le domain est libre mais est un premium. Son prix est variable d'un domain à l'autre. |
+transfer-default| Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfer est au prix standard.  |
+transfer-premium | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domain premium et son prix est variable d'un domain à l'autre |
+transfer-aftermarket1, transfer-aftermarket2   | Le domain est libre via un marché secondaire. Son prix est variable d'un domain à l'autre  |
+
+
+La deuxième, **déprécié et bientôt supprimé** consiste à analyser le couple pricing-mode/offerId.
+
+Pricing-mode | offerId |Description | 
+--------- | -------  | -------  |
+default  | $extension-create (fr-create, com-create) | Le domain est libre et au prix standard     |
+premium  | $extension-create (fr-create, com-create) | Le domain est libre mais est un premium. Son prix est variable d'un domain à l'autre. |
+default| $extension-transfer  (fr-transfer, com-transfer) |Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfer est au prix standard.  |
+premium | $extension-transfer (fr-transfer, com-transfer) | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domain premium et son prix est variable d'un domain à l'autre |
+aftermarket1, aftermarket2   | $extension-transfer (fr-transfer, com-transfer) |Le domain est libre via un marché secondaire. Son prix est variable d'un domain à l'autre  |
+
 
 
 ::: tip INFO
@@ -259,9 +294,10 @@ Parameter | Required | Default | Description
 --------- | -------  | ------- | -----------
 domain    | true     |         | Le nom de domain souhaité
 duration  | false    |         | Période de réservation. Seule la valeur P1Y est accepté
-offerId   | false    |         | Offre disponible pour le domaine. Cette valeur ne peut avoir qu'une seule valeur pour un domain donné
+offerId   | false    |         | Offre disponible pour le domaine. Cette valeur ne peut avoir qu'une seule valeur pour un domain donné (Déprécié)
 quantity  | false    |         | Nombre d'années voulu. Pour le moment, seul la valeur une est autorisée 
-
+planCode  | false    |         | Représente le plan lié au domaine
+pricingMode | false  |         | Représente l'offre lié au plan du domaine
 
 :::: tabs
 
@@ -280,10 +316,14 @@ var item Item
 data  := ItemData{
   Domain: "foo.fr",
 
-  //optional
-  OfferId: "fr-create", 
+  // optional
+  PlanCode: "fr",
+  PricingMode: "default-create"
   Quantity:1, 
   Duration: "P1Y",
+
+  // deprecated
+  OfferId: "fr-create",  // deprecated 
 }   
 err := client.Post("/order/cart", data, &item)
 ```
@@ -295,10 +335,15 @@ err := client.Post("/order/cart", data, &item)
 itemData = {
   "domain" : "foo.fr"
 
-  #optional
-  "offerId": "fr-create", 
+  # optional
+  
+  "planCode": "fr",
+  "pricingMode": "default-create",
   "quantity":1, 
   "duration": "P1Y",
+
+  # deprecated
+  "offerId": "fr-create", 
 }
 
 item = client.post("/order/cart/{0}/domain".format(cart.get("cartId")), **itemData)
@@ -311,10 +356,15 @@ item = client.post("/order/cart/{0}/domain".format(cart.get("cartId")), **itemDa
 ```javascript
 client.requestPromised('POST', '/order/cart/$cartID/domain', {
       'domain': 'foo.fr',
-      // Optional
-      'offerId': 'fr-create',
-      'quantity' : 1,
-      'duration' : 'P1Y'
+      // optional
+      
+      "planCode": "fr",
+      "pricingMode": "default-create",
+      "quantity":1, 
+      "duration": "P1Y",
+
+      // deprecated
+      "offerId": "fr-create", 
 })
   .then(function (item) {
     // item
@@ -419,7 +469,7 @@ summary = client.get("/order/cart/{0}/summary".format(cart.get("cartId")))
 
 
 ```javascript
-client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summary) {
+client.requestPromised('GET', '/order/cart/$cartID/summary').then(function (summary) {
   // summary
 })
 .catch(function (err) {
@@ -441,35 +491,7 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
   "details": [
     {
       "cartItemID": null,
-      "description": "foo.fr - Zone DNS",
-      "detailType": "INSTALLATION",
-      "domain": "*001.001",
-      "originalTotalPrice": {
-        "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
-      },
-      "quantity": 1,
-      "reductionTotalPrice": {
-        "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
-      },
-      "reductions": [],
-      "totalPrice": {
-        "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
-      },
-      "unitPrice": {
-        "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
-      }
-    },
-    {
-      "cartItemID": null,
-      "description": "foo.fr - Zone DNS",
+      "description": "testdomainorder.com - Zone DNS",
       "detailType": "DURATION",
       "domain": "*001.001",
       "originalTotalPrice": {
@@ -525,41 +547,13 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
     },
     {
       "cartItemID": null,
-      "description": "foo.fr - .fr demande d'enregistrement - 1 an",
-      "detailType": "INSTALLATION",
-      "domain": "*001",
-      "originalTotalPrice": {
-        "currencyCode": "EUR",
-        "text": "6.99 €",
-        "value": 6.99
-      },
-      "quantity": 1,
-      "reductionTotalPrice": {
-        "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
-      },
-      "reductions": [],
-      "totalPrice": {
-        "currencyCode": "EUR",
-        "text": "6.99 €",
-        "value": 6.99
-      },
-      "unitPrice": {
-        "currencyCode": "EUR",
-        "text": "6.99 €",
-        "value": 6.99
-      }
-    },
-    {
-      "cartItemID": null,
-      "description": "foo.fr - .fr demande d'enregistrement - 1 an",
+      "description": "testdomainorder.com - .com demande d'enregistrement - 12 mois",
       "detailType": "DURATION",
       "domain": "*001",
       "originalTotalPrice": {
         "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
+        "text": "9.99 €",
+        "value": 9.99
       },
       "quantity": 1,
       "reductionTotalPrice": {
@@ -570,18 +564,18 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
       "reductions": [],
       "totalPrice": {
         "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
+        "text": "9.99 €",
+        "value": 9.99
       },
       "unitPrice": {
         "currencyCode": "EUR",
-        "text": "0.00 €",
-        "value": 0
+        "text": "9.99 €",
+        "value": 9.99
       }
     },
     {
       "cartItemID": null,
-      "description": "Domain .fr",
+      "description": "Domain .com",
       "detailType": "INSTALLATION",
       "domain": "*001",
       "originalTotalPrice": {
@@ -609,13 +603,13 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
     },
     {
       "cartItemID": null,
-      "description": ".FR Create Prix barre",
+      "description": ".COM Create Prix barre",
       "detailType": "GIFT",
       "domain": "*001",
       "originalTotalPrice": {
         "currencyCode": "EUR",
-        "text": "-2.00 €",
-        "value": -2
+        "text": "-2.50 €",
+        "value": -2.5
       },
       "quantity": 1,
       "reductionTotalPrice": {
@@ -626,13 +620,13 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
       "reductions": [],
       "totalPrice": {
         "currencyCode": "EUR",
-        "text": "-2.00 €",
-        "value": -2
+        "text": "-2.50 €",
+        "value": -2.5
       },
       "unitPrice": {
         "currencyCode": "EUR",
-        "text": "-2.00 €",
-        "value": -2
+        "text": "-2.50 €",
+        "value": -2.5
       }
     }
   ],
@@ -640,8 +634,8 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
   "prices": {
     "originalWithoutTax": {
       "currencyCode": "EUR",
-      "text": "4.99 €",
-      "value": 4.99
+      "text": "7.49 €",
+      "value": 7.49
     },
     "reduction": {
       "currencyCode": "EUR",
@@ -650,18 +644,18 @@ client.requestPromised('GET', '/order/cart/$cartID/domain').then(function (summa
     },
     "tax": {
       "currencyCode": "EUR",
-      "text": "1.00 €",
-      "value": 1
+      "text": "1.50 €",
+      "value": 1.5
     },
     "withTax": {
       "currencyCode": "EUR",
-      "text": "5.99 €",
-      "value": 5.99
+      "text": "8.99 €",
+      "value": 8.99
     },
     "withoutTax": {
       "currencyCode": "EUR",
-      "text": "4.99 €",
-      "value": 4.99
+      "text": "7.49 €",
+      "value": 7.49
     }
   },
   "url": null
@@ -905,11 +899,6 @@ client.requestPromised('POST', '/order/cart/$cartID/item/$itemID/configuration',
 
 `DELETE /order/cart/{cartId}/item/{itemId}/configuration/{configurationId}`
 
-
-
-## Gestion des options
-
-TODO
 
 ## Gestion du panier
 
