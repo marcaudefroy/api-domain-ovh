@@ -1,14 +1,14 @@
-const { description } = require('../../package')
+const { description } = require("../../package");
 
-module.exports = ctx => ({
-    base: '/api-domain-ovh/',
+module.exports = (ctx) => ({
+    base: "/api-domain-ovh/",
     locales: {
-        '/': {
-            lang: 'en-US',
+        "/": {
+            lang: "en-US",
             title: "Domain API",
         },
-        '/fr/': {
-            lang: 'fr-FR',
+        "/fr/": {
+            lang: "fr-FR",
             title: "API domain",
         },
     },
@@ -17,7 +17,7 @@ module.exports = ctx => ({
     /**
      * Ref：https://v1.vuepress.vuejs.org/config/#title
      */
-    title: 'OVHcloud Domain API documentation',
+    title: "OVHcloud Domain API documentation",
     /**
      * Ref：https://v1.vuepress.vuejs.org/config/#description
      */
@@ -29,9 +29,12 @@ module.exports = ctx => ({
      * ref：https://v1.vuepress.vuejs.org/config/#head
      */
     head: [
-        ['meta', { name: 'theme-color', content: '#0057AE' }],
-        ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-        ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
+        ["meta", { name: "theme-color", content: "#0057AE" }],
+        ["meta", { name: "apple-mobile-web-app-capable", content: "yes" }],
+        [
+            "meta",
+            { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+        ],
     ],
 
     /**
@@ -41,10 +44,10 @@ module.exports = ctx => ({
      */
     themeConfig: {
         //  defaultTheme: 'dark',
-        repo: '',
+        repo: "",
         editLinks: false,
-        docsDir: '',
-        editLinkText: '',
+        docsDir: "",
+        editLinkText: "",
         lastUpdated: false,
         smoothScroll: true,
         nextLinks: true,
@@ -52,64 +55,60 @@ module.exports = ctx => ({
         displayAllHeaders: true,
         sidebarDepth: 1,
         locales: {
-            '/': {
-                lang: 'en-US',
+            "/": {
+                lang: "en-US",
                 title: "Domain API",
-                sidebar: [
-                    '/',
-                ]
+                sidebar: ["/"],
             },
-            '/fr/': {
-                selectText: 'Languages',
+            "/fr/": {
+                selectText: "Languages",
                 nav: [{
-                    link: '',
-                }],
+                    link: "",
+                }, ],
                 sidebar: [{
                         title: "Introduction",
-                        path: '/fr/',
+                        path: "/fr/",
                     },
                     {
                         title: "Commander un nom de domaine",
-                        path: '/fr/order',
+                        path: "/fr/order",
                     },
                     {
                         title: "Règles sur un domain",
-                        path: '/fr/rules',
+                        path: "/fr/rules",
                     },
                     {
                         title: "Gestion d'un domain",
                         collapsable: false,
-                        path: '/fr/domain',
+                        path: "/fr/domain",
                     },
                     {
                         title: "Gestion des contacts",
                         collapsable: false,
-                        path: '/fr/contacts',
+                        path: "/fr/contacts",
                     },
                     {
                         title: "Whois",
                         collapsable: false,
-                        path: '/fr/whois',
+                        path: "/fr/whois",
                     },
                     {
                         title: "Gestion des opérations",
                         collapsable: false,
-                        path: '/fr/operations',
+                        path: "/fr/operations",
                     },
                     {
                         title: "Changelog",
                         collapsable: false,
-                        path: '/fr/changelog',
+                        path: "/fr/changelog",
                     },
-                ]
-            }
+                ],
+            },
         },
     },
 
     /**
      * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
      */
-    plugins: [
-        'vuepress-plugin-element-tabs',
-    ]
-})
+    plugins: ["vuepress-plugin-element-tabs"],
+});
