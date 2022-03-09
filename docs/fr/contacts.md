@@ -2,8 +2,7 @@
 
 La gestion des contacts est un point central de la gestion des noms de domaine. 
 
-
-## Introduction
+// TODO : Apporter peut-être des infos sur la loi
 
 Avant d'aller plus loin, il est important de différencier les deux différents type de contacts.
 
@@ -47,8 +46,10 @@ Seul le contact registrant n'est pas lié à un nic OVH.
 
 ## Nics Admin et Tech
 
+//TODO: Ici on peut notamment parler de la différence de droit. Un nictech ayant des droits assez limiter (juste le changement de zone). Mais aucun droit sur les contacts par exemple
 ## Création d'un nouveau nic
 
+// TODO: On va pas trop s'étaler sur la création des nics. C'est pas l'objet de notre doc
 ### Règles
 
 apis /newAccount
@@ -56,7 +57,6 @@ apis /newAccount
 ## Modification d'un nic
 
 api /newAccount/rules
-
 
 ## Contact propriétaire
 
@@ -80,9 +80,9 @@ Les apis /domain/contacts apportent deux principales fonctionnalités
 
 ### Récupération des contacts existants
 
+//TODO: Expliquer brièvement l'API.
 
 `GET /domains/contacts`
-
 
 ## Création d'un contact
 
@@ -98,6 +98,36 @@ api POST /domains/contact
 
 api PUT /domains/contact
 
+//TODO : Expliquer que la modification d'un contact : 
+- Doit être validé par les règles lié aux domaines associés au domaine
+- Qu'il déclenche une operation de DomainContactUpdate qui synchronisera les contact côté registre et mettra à jour le whois/rdap
 ## Changement de contact propriétaire
 
+// TODO: Expliquer qu'un changement de contact propriétaire pour une extension lié à l'icann demande un process particulier.
+- Qu'un changement d'email est considéré comme un changement de propriétaire.
+- On matérialise le changement de contact via un BC qui permet de:
+    - Revalider les contrats légales lié au propriétaire si besoin
+    - Facturer le service pour les registres ayant des coût de changement de propriétaire et/ou des process manuel
+- Expliquer la commande de changement de propriétaire (api order serviceOption, rappelez que la gestion des règles est déjà décrite dans rules.md)
+- Expliquer qu'une opération de DomainTrade est visible sur le manager une fois le BC validé et pris en compte par notre SI.
+  - Que cette opération demandera confirmation à l'actuelle registrant (via son adresse mail)
 
+## Changement de nic sur le service domaine
+
+// TODO: Expliquer le workflow de la procédure de changement de nic sur un service
+
+
+// TODO: Expliquer les api sur comment déclencher la procédure et comment la suivre
+Launch a contact change procedure
+POST /domain/zone/{zoneName}/changeContact
+
+
+GET /me/task/contactChange
+List of service contact change tasks you are involved in
+GET /me/task/contactChange/{id}
+Get this object properties
+POST /me/task/contactChange/{id}/accept
+Accept this change request
+POST /me/task/contactChange/{id}/refuse
+Refuse this change request
+POST /me/task/contactChange/{id}/resendEmail

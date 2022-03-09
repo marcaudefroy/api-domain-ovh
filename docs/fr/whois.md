@@ -2,6 +2,8 @@
 
 ## Fonctionnement
 
+TODO : Explique le fonctionnement du whois et du radp. La partie thin/thick. Les différentes politiques d'optin des registres, etc...
+
 ## Divulgation des informations
 
 Depuis le RGPD, les données du whois concernant les contacts admin, tech et propriétaire (owner) sont caché par défaut. 
@@ -85,8 +87,12 @@ La réponse ci-dessus indique les 3 types de règles qu'il est possible de renco
 - Concernant le contact owner, c'est la règle la plus customisable. La présence des champs dans le noeud `field` indique qu'il est possible de choisir quels champs seront divulguer dans le whois.
 
 ### Récupération de la configuration optin
+//TODO
 ### Modification de la configuration optin
+//TODO
 
 ## Obfuscation d'email
+//TODO
 
 ### Récupération de la règle d'obfuscation
+//TODO
