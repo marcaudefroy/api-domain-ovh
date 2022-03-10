@@ -1,7 +1,7 @@
 # Gestion des opérations
 
-La plupart des actions effectuées sur les noms de domaines se traduisent par des modifications chez le OVHcloud, ainsi que chez le registre.
-Par souci de robustesse et de performance, elles sont donc lancées de manière asynchrones.
+La plupart des actions effectuées sur les noms de domaines se traduisent par des modifications chez le registrar (OVHcloud), ainsi que chez le registre.
+Par souci de robustesse et de performance, elles sont lancées de manière asynchrones.
 
 Pour permettre le suivi de ces changements asynchrones, les actions sont abstraites sous forme d'**opérations**. Lorsqu'une action asynchrone est lancée,
 une **opération** est créée et permet de récupérer un statut, de modifier certaines données en cas d'erreur ou encore de relancer des actions après un échec,
@@ -26,7 +26,7 @@ Les statuts suivants peuvent aussi survenir dans des cas non nominaux :
 - `cancelled`: l'opération a été annulée, soit par le client, soit par OVHcloud. Il s'agit d'un statut final.
 - `error`: une erreur est survenue lors de l'exécution de l'opération. Deux cas sont possibles :
   1. Une information fournie par le client est invalide ou manquante : dans ce cas vous aurez la possibilité de corriger les données problématiques et pourrez relancer l'opération.
-  2. Un problème est survenu du côté d'OVHcloud : dans ce cas vous ne pourrez pas relancer l'opération vous-même. L'opération sera relancée automatiquement périodiquement, mais vous devrez ouvrir une demande de support si elle ne se résoud pas d'elle-même après un certain temps.
+  2. Un problème est survenu du côté d'OVHcloud : dans ce cas vous ne pourrez pas relancer l'opération vous-même. L'opération sera relancée périodiquement de manière automatique, mais vous devrez ouvrir une demande de support si malgré cela le problème persiste.
 
 ## Visualiser les opérations en cours
 
@@ -38,7 +38,7 @@ Pour lister vos opérations, vous pouvez utiliser l'API suivante:
 | ---------- | :---------: | ------------------------------------------------ |
 | `domain`   |      ✗      | Filtrer les opérations liées à ce nom de domaine |
 | `function` |      ✗      | Type des opérations à récupérer                  |
-| `status`   |      ✗      | Statut des opérations ) récupérer                |
+| `status`   |      ✗      | Statut des opérations à récupérer                |
 
 Cet appel API retournera la liste des identifiants des opérations correspondant à vos filtres.
 
@@ -113,3 +113,4 @@ Il existe un grand nombre de types d'opérations différentes (plus d'une trenta
 - `DomainCreate` : création d'un nom de domaine. Les erreurs seront généralement liées aux conditions d'éligibilité, notamment dans le cas des ccTLDs.
 - `DomainIncomingTransfer`, `DomainAfterMarket` : transfert d'un nom de domaine depuis un autre registrar ou un marché secondaire. Les erreurs seront généralement liées à la demande de l'auth code permettant la validation du transfert.
 - `DomainTrade` : changement de contact propriétaire. Les erreurs seront généralement liées à des incompatibilités d'éligibilité sur le contact receveur.
+- `DomainContactUpdate` : modification des informations d'un contact. Les erreurs seront généralement liées à des informations sémantiquement invalides, à des erreurs de formattage ou encore à des incompatibilités d'éligibilité.
