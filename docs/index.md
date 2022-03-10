@@ -1,9 +1,5 @@
----
-sidebar: auto
----
-
 # Introduction
 
-Welcome to Domain OVHCloud API
+Welcome to Domain OVHcloud API
 
 TODO
