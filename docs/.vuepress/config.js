@@ -5,11 +5,11 @@ module.exports = ctx => ({
   locales: {
     "/": {
       lang: "en-US",
-      title: "Domain API"
+      title: "OVHcloud Domain API"
     },
     "/fr/": {
       lang: "fr-FR",
-      title: "API domain"
+      title: "API domaine OVHcloud"
     }
   },
   //theme: 'default-prefers-color-scheme',
@@ -61,7 +61,7 @@ module.exports = ctx => ({
         sidebar: ["/"]
       },
       "/fr/": {
-        selectText: "Languages",
+        selectText: "Langues",
         nav: [
           {
             link: ""
@@ -77,11 +77,11 @@ module.exports = ctx => ({
             path: "/fr/order"
           },
           {
-            title: "Règles sur un domain",
+            title: "Règles sur un domaine",
             path: "/fr/rules"
           },
           {
-            title: "Gestion d'un domain",
+            title: "Gestion d'un domaine",
             collapsable: false,
             path: "/fr/domain"
           },
