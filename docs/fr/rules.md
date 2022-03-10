@@ -3,22 +3,23 @@
 ## Introduction
 
 L'obtention et la détention d'un nom de domaine sont accompagnées d'obligations légales tel que :
+
 - les règles d'utilisation d'un nom de domaine. Un .travel doit nécessairement avoir un lien avec l'industrie du tourisme.
 - les règles d'éligibilitées. L'adresse du contact propriétaire d'un .eu doit se situer au sein de l'union européenne.
 
 Ces règles sont fixées par l'opérateur de l'extension, le registre, et varient selon les extensions tout en évoluant au fil du temps.
 
-Concernant les règles d'éligibilité, elles concernent des éléments connues du registrar tel que le domain, les contacts ou encore la procédure d'enregistrement. Ces règles d'éligibilité s'appliquent : 
+Concernant les règles d'éligibilité, elles concernent des éléments connues du registrar tel que le domain, les contacts ou encore la procédure d'enregistrement. Ces règles d'éligibilité s'appliquent :
 
 - Sur les données du **contact propriétaire, administratif et technique**. Par exemple, l'adresse du propriétaire doit se situé au sein de l'union européenne pour un domain .eu.
 - Sur des données liées à la **procédure** de demande de création, de transfer, de changement de propriétaire. Par exemple la raison de la création d'un domaine en .fr représentant un nom de ville.
 
-Avec un nombre d'extensions grandissant d'année en année, il devient ingérable de traiter ces différentes règles manuellement. Il devient alors nécessaire d'automatiser la gestion de ces règles. 
+Avec un nombre d'extensions grandissant d'année en année, il devient ingérable de traiter ces différentes règles manuellement. Il devient alors nécessaire d'automatiser la gestion de ces règles.
 En réussissant à définir une description de ces différentes règles dans un format technique, il est possible d'automatiser la génération des différents formulaires requis ainsi que la validation des données saisies.
 
 ## Représentation technique
 
-Les conditions d'éligibilités d'un domain peuvent être représenté sous la forme d'un objet json **récursif**. 
+Les conditions d'éligibilités d'un domain peuvent être représenté sous la forme d'un objet json **récursif**.
 
 Voici l'exemple de la représentation json du .com que l'on peut obtenir via l'api `/domain/configurationRule` (que nous expliciteront plus tard).
 Inutile de s'y attarder pour le moment, nous allons décortiquer tout ça pas à pas.
@@ -219,12 +220,7 @@ Inutile de s'y attarder pour le moment, nous allons décortiquer tout ça pas à
             "constraints": [
               {
                 "operator": "contains",
-                "values": [
-                  "association",
-                  "corporation",
-                  "individual",
-                  "other"
-                ]
+                "values": ["association", "corporation", "individual", "other"]
               },
               {
                 "operator": "required"
@@ -374,24 +370,25 @@ Inutile de s'y attarder pour le moment, nous allons décortiquer tout ça pas à
   "constraints": []
 }
 ```
+
 :::
 
 ### Objets
 
 Dans un premier temps, regardons les élements qui composent la représentation json des conditions d'éligibilité.
 
-- `Rule` : Objet principal représentant les conditions d'éligibilité. Elle contient les autres objets décris dans les autres points. 
+- `Rule` : Objet principal représentant les conditions d'éligibilité. Elle contient les autres objets décris dans les autres points.
 - `Label` : Représente une information et une sous-information : authInfo, owner_contact, vat, nom, prénom, etc...
 - `Type` : Indique le format d'un label : string, number, bool, contact...
-- `Constraint` : Represente les contraintes appliqué à la valeur d'un label. 
-  - `Operator` : Représente le type de contrainte appliqué au label.  
+- `Constraint` : Represente les contraintes appliqué à la valeur d'un label.
+  - `Operator` : Représente le type de contrainte appliqué au label.
 - `Condition` : Spécifie les conditions d'application sous forme de `Rule` d'un label ou d'une contrainte. Si la condition (rule) est respecté, alors l'objet associé doit être appliqué.
 - `Fields` : Sous-règle sous forme de `Rule£ appliquée à un label de type contact.
 - `Placeholder` : Exemple de valeur possible.
 - `Description` : Information concernant le champ.
 - `And` : Permet de combiner des objets `Rule`
- 
-En go, le type se définit ainsi : 
+
+En go, le type se définit ainsi :
 
 ```go
 type Rule struct {
@@ -413,10 +410,11 @@ type RuleConstraint struct {
 }
 
 ```
+
 #### Labels
 
 | Label             | UI suggéré         | Comment                                                   |
-|-------------------|--------------------|-----------------------------------------------------------|
+| ----------------- | ------------------ | --------------------------------------------------------- |
 | ACCEPT_CONDITIONS | text with checkbox | Conditions particulières à accepter                       |
 | REASON            | textarea           | Raison de l'achat du ndd (demandé par certains registres) |
 | CLAIMS_NOTICE     | Text with checkbox | Information concernant la "claim notice" à accepter       |
@@ -428,7 +426,6 @@ type RuleConstraint struct {
 | OWNER_CONTACT     | Form               | Liste de champs lié au contact propriétaire               |
 | OWNER_LEGAL_AGE   | Text with checkbox | Si particulier, le propriétaire doit être majeur (>18)    |
 
-
 #### Types
 
 Il y a deux types de label : primitif et objet. Le type est composé de labels de type primitif.
@@ -436,7 +433,7 @@ Il y a deux types de label : primitif et objet. Le type est composé de labels d
 ##### Primitif
 
 | Type         | UI suggéré         | Comment                                 |
-|--------------|--------------------|-----------------------------------------|
+| ------------ | ------------------ | --------------------------------------- |
 | string       | input text         |                                         |
 | string[]     | list of input text |                                         |
 | text         | textarea           |                                         |
@@ -446,23 +443,22 @@ Il y a deux types de label : primitif et objet. Le type est composé de labels d
 
 ##### Objet
 
+| Type    | Comment                             |
+| ------- | ----------------------------------- |
+| contact | Contient les champs liés au contact |
+| domain  | Contient les champs liés au domain  |
 
-| Type        | Comment                                 |
-|-------------|-----------------------------------------|
-| contact     | Contient les champs liés au contact     |
-| domain      | Contient les champs liés au domain      |
+::: tip
 
-::: tip 
-
-Le type domain n'est aujourd'hui utilisé que pour les extensions ac.uk, gov.uk. 
+Le type domain n'est aujourd'hui utilisé que pour les extensions ac.uk, gov.uk.
 Ces domaines ont un processus de création très particulier ainsi que des conditions d'appropriations et d'utilisations très particulieres.
 
 :::
 
 #### Constraints
 
-| Constraint   | UI suggéré                | Comment                                                                |
-|--------------|--------------------|------------------------------------------------------------------------|
+| Constraint   | UI suggéré         | Comment                                                                |
+| ------------ | ------------------ | ---------------------------------------------------------------------- |
 | required     | petit étoile rouge | Champ est requis                                                       |
 | readonly     | champ grisé        | Champ est en lecture seul                                              |
 | eq           | -                  | Champ doit être égale à `$value`                                       |
@@ -471,7 +467,7 @@ Ces domaines ont un processus de création très particulier ainsi que des condi
 | lt           | -                  | Champ doit être inférieur à `$value`                                   |
 | maxlength    | -                  | Longueur du champ doit être inférieur à `$value`                       |
 | minlength    | -                  | Longueur du champ soit être supérieur à `$value`                       |
-| between      | -                  | Champ doit être compris entre $value1 et `$value2`                     |
+| between      | -                  | Champ doit être compris entre \$value1 et `$value2`                    |
 | contains     | list               | Champ doit être égale à un des éléments contenu dans `$values`         |
 | notcontains  | -                  | Champ ne doit pas être égale à un des éléments contenus dans `$values` |
 | empty        | -                  | Champ doit être vide                                                   |
@@ -486,7 +482,68 @@ Ces domaines ont un processus de création très particulier ainsi que des condi
 Partons d'un exemple simple. Admettons que nous ayons qu'une seule règle pour la commande d'un nom de domaine qui stipule qui nous demande d'accepter des conditions particulières.
 
 ```json
- {
+{
+  "label": "ACCEPT_CONDITIONS",
+  "type": "bool",
+  "description": "Registry has special condition must be accepted. Your domain must hosting only cats",
+  "placeholder": "true",
+  "constraints": [
+    {
+      "operator": "required"
+    },
+    {
+      "operator": "shouldbetrue"
+    }
+  ]
+}
+```
+
+Avec ce type de règle, lors de la commande, le domaine doit obligatoirement avoir une [configuration](order#gestion-des-configurations) ayant pour label `ÀCCEPT_CONDITIONS` avec une valeur booléene à `true`, `1` ou `"1"`.
+
+### La règle AND et OR
+
+Partons maintenant sur un exemple avec une règle sur deux labels : `ACCEPT_CONDITIONS` et `REASON`.
+Séparemment ça donnerait quelque chose comme ça :
+
+```json
+{
+  "label": "ACCEPT_CONDITIONS",
+  "type": "bool",
+  "description": "Registry has special condition must be accepted. Your domain must hosting only cats",
+  "placeholder": "true",
+  "constraints": [
+    {
+      "operator": "required"
+    },
+    {
+      "operator": "shouldbetrue"
+    }
+  ]
+}
+```
+
+```json
+{
+  "label": "REASON",
+  "type": "text",
+  "description": "Justifier l'achat de ce nom de domaine",
+  "placeholder": "Je suis le maire de la ville OVHcity et je veux un nom de domaine pour ma ville",
+  "constraints": [
+    {
+      "operator": "required"
+    }
+  ]
+}
+```
+
+Nous pouvons les combiner en utilisant la propriété `and` de l'objet Rule. Elle demande à ce que les tout les labels respectent leurs contraintes respectives.
+
+Voici un exemple :
+
+```json
+{
+  "and": [
+    {
       "label": "ACCEPT_CONDITIONS",
       "type": "bool",
       "description": "Registry has special condition must be accepted. Your domain must hosting only cats",
@@ -499,85 +556,21 @@ Partons d'un exemple simple. Admettons que nous ayons qu'une seule règle pour l
           "operator": "shouldbetrue"
         }
       ]
-  }
-```
-
-Avec ce type de règle, lors de la commande, le domaine doit obligatoirement avoir une [configuration](order#gestion-des-configurations) ayant pour label `ÀCCEPT_CONDITIONS` avec une valeur booléene à `true`, `1` ou `"1"`. 
-
-### La règle AND et OR
-
-Partons maintenant sur un exemple avec une règle sur deux labels : `ACCEPT_CONDITIONS` et `REASON`.
-Séparemment ça donnerait quelque chose comme ça :
-
-```json
-{
-    "label": "ACCEPT_CONDITIONS",
-    "type": "bool",
-    "description": "Registry has special condition must be accepted. Your domain must hosting only cats",
-    "placeholder": "true",
-    "constraints": [
-      {
-        "operator": "required"
-      },
-      {
-        "operator": "shouldbetrue"
-      }
-    ]
-}
-```
-
-```json
-{
-    "label": "REASON",
-    "type": "text",
-    "description": "Justifier l'achat de ce nom de domaine",
-    "placeholder": "Je suis le maire de la ville OVHcity et je veux un nom de domaine pour ma ville",
-    "constraints": [
-      {
-        "operator": "required"
-      }
-    ]
-}
-```
-
-Nous pouvons les combiner en utilisant la propriété `and` de l'objet Rule. Elle demande à ce que les tout les labels respectent leurs contraintes respectives.
-
-Voici un exemple :
-
-```json
- 
- {
-  "and" : [
-    {
-        "label": "ACCEPT_CONDITIONS",
-        "type": "bool",
-        "description": "Registry has special condition must be accepted. Your domain must hosting only cats",
-        "placeholder": "true",
-        "constraints": [
-          {
-            "operator": "required"
-          },
-          {
-            "operator": "shouldbetrue"
-          }
-        ]
     },
     {
-        "label": "REASON",
-        "type": "text",
-        "description": "Justifier l'achat de ce nom de domaine",
-        "placeholder": "Je suis le maire de la ville OVHcity et je veux un nom de domaine pour ma ville",
-        "constraints": [
-          {
-            "operator": "required"
-          }
-        ]
+      "label": "REASON",
+      "type": "text",
+      "description": "Justifier l'achat de ce nom de domaine",
+      "placeholder": "Je suis le maire de la ville OVHcity et je veux un nom de domaine pour ma ville",
+      "constraints": [
+        {
+          "operator": "required"
+        }
+      ]
     }
   ]
 }
-
 ```
-
 
 ::: tip
 
@@ -585,11 +578,10 @@ Il existe également une propriété "or" qui, comme son nom l'indique, nécessi
 
 :::
 
-
 ### Gestion du type objet
 
-La gestion des contraintes sur un objet est un peu plus complexe dû au fait qu'un objet est composé de champs primitif (un contact est composé d'un nom, d'un prénom, etc...). 
-Pour réprésenter les règles sur un objet, le noeud `fields` a été créé. Et celui-ci n'est rien de plus d'un objet de type `rule`. Etant donné qu'un objet contient plusieurs champs, la règle de base d'un objet est toujours de "type" `and`. 
+La gestion des contraintes sur un objet est un peu plus complexe dû au fait qu'un objet est composé de champs primitif (un contact est composé d'un nom, d'un prénom, etc...).
+Pour réprésenter les règles sur un objet, le noeud `fields` a été créé. Et celui-ci n'est rien de plus d'un objet de type `rule`. Etant donné qu'un objet contient plusieurs champs, la règle de base d'un objet est toujours de "type" `and`.
 
 Etant donné qu'on a appris précédemment à gérer une règle `and` sur des types primitifs, on sait gérer une règle d'un type objet.
 Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir différents types primitif ainsi que différents type de contraintes.
@@ -607,7 +599,7 @@ Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir diff
         "placeholder": "lorem",
         "constraints": [
           {
-            "operator": "required",
+            "operator": "required"
           },
           {
             "operator": "maxlength",
@@ -622,7 +614,7 @@ Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir diff
         "placeholder": "lorem",
         "constraints": [
           {
-            "operator": "required",
+            "operator": "required"
           },
           {
             "operator": "maxlength",
@@ -653,12 +645,7 @@ Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir diff
         "constraints": [
           {
             "operator": "contains",
-            "values": [
-              "association",
-              "corporation",
-              "individual",
-              "other"
-            ]
+            "values": ["association", "corporation", "individual", "other"]
           },
           {
             "operator": "required"
@@ -677,15 +664,11 @@ Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir diff
         "constraints": [
           {
             "operator": "contains",
-            "values": [
-              "FR",
-              "DE",
-              "CA"
-            ]
+            "values": ["FR", "DE", "CA"]
           },
           {
             "operator": "required"
-          },
+          }
         ]
       },
       {
@@ -710,7 +693,7 @@ Voici un exemple de règle sur un objet de type contact. Vous pouvez y voir diff
         "placeholder": "12345",
         "constraints": [
           {
-            "operator": "required",
+            "operator": "required"
           },
           {
             "operator": "maxlength",
@@ -738,8 +721,7 @@ Le champs `address` est un peu spécifique. On s'est posé la question d'en fair
 
 ### Conditions
 
-Parfois, nous avons besoin de préciser à quel moment une règle doit être appliqué. Par exemple, le nom de l'organisme (`organisationName`) est obligatoire pour un contact non individuel (`legalForm` n'est pas de type `ìndividual`).  Pour cela, nous allons utiliser une condition. La nature de celle-ci est une règle (l'objet `rule`) qui, si elle est valide, "active" la règle qu'elle conditionne. Vous pouvez remplacer le mot `conditions` par le mot `ìf` si cela vous semble plus clair.
-
+Parfois, nous avons besoin de préciser à quel moment une règle doit être appliqué. Par exemple, le nom de l'organisme (`organisationName`) est obligatoire pour un contact non individuel (`legalForm` n'est pas de type `ìndividual`). Pour cela, nous allons utiliser une condition. La nature de celle-ci est une règle (l'objet `rule`) qui, si elle est valide, "active" la règle qu'elle conditionne. Vous pouvez remplacer le mot `conditions` par le mot `ìf` si cela vous semble plus clair.
 
 Voici un exemple simple purement fictif : un registre veut que les conditions spécifiques (`ACCEPT_CONDITIONS`) doivent être obligatoirement accepté uniquement s'il n'y a pas de raison (`REASON`). Et voici sa représentation sous forme json.
 
@@ -765,15 +747,14 @@ Voici un exemple simple purement fictif : un registre veut que les conditions sp
           }
         ]
       }
-    },
+    }
   ]
 }
 ```
 
-Cette règle conditionne la contrainte `required`, si celle-ci n'est pas rempli (la raison a été renseigné), alors la contrainte ne s'applique pas et le champs ACCEPT_CONDITIONS devient optionnel (mais on peut toujours remplir ce champs).  
+Cette règle conditionne la contrainte `required`, si celle-ci n'est pas rempli (la raison a été renseigné), alors la contrainte ne s'applique pas et le champs ACCEPT_CONDITIONS devient optionnel (mais on peut toujours remplir ce champs).
 
 Il est également possible de vouloir complètement omettre le label ACCEPT_CONDITION en plaçant la condition directement sur le label ACCEPT_CONDITION comme ceci.
-
 
 ```json
 {
@@ -783,8 +764,8 @@ Il est également possible de vouloir complètement omettre le label ACCEPT_COND
   "placeholder": "Justifier l'achat de ce nom de domaine",
   "constraints": [
     {
-      "operator": "required",
-    },
+      "operator": "required"
+    }
   ],
   "conditions": {
     "label": "REASON",
@@ -820,12 +801,7 @@ Prenons maintenant l'exemple plus concret énoncé au début de cette section : 
         "constraints": [
           {
             "operator": "contains",
-            "values": [
-              "association",
-              "corporation",
-              "individual",
-              "other"
-            ]
+            "values": ["association", "corporation", "individual", "other"]
           },
           {
             "operator": "required"
@@ -864,7 +840,7 @@ Prenons maintenant l'exemple plus concret énoncé au début de cette section : 
             }
           }
         ]
-      },
+      }
     ],
     "constraints": []
   },
@@ -881,7 +857,7 @@ Prenons maintenant l'exemple plus concret énoncé au début de cette section : 
 
 Maintenant que l'on a décortiquer la représentation technique des règles d'éligibilités, voici quelques exemples concrets et réels.
 
-### Règlse génériques 
+### Règlse génériques
 
 La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles d'éligibilités. Avoir un contact propriétaire respectants celle-ci permet de posséder la majorité des extensions disponibles.
 
@@ -1078,12 +1054,7 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
             "constraints": [
               {
                 "operator": "contains",
-                "values": [
-                  "association",
-                  "corporation",
-                  "individual",
-                  "other"
-                ]
+                "values": ["association", "corporation", "individual", "other"]
               },
               {
                 "operator": "required"
@@ -1232,9 +1203,10 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
   ],
   "constraints": []
 }
-
 ```
-::: 
+
+:::
+
 #### Transfer
 
 ::: details transfer
@@ -1270,16 +1242,7 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
             "constraints": [
               {
                 "operator": "contains",
-                "values": [
-                  "AC",
-                  "AD",
-                  "AE",
-                  "AF",
-                  "...",
-                  "ZA",
-                  "ZM",
-                  "ZW"
-                ]
+                "values": ["AC", "AD", "AE", "AF", "...", "ZA", "ZM", "ZW"]
               },
               {
                 "operator": "required"
@@ -1427,12 +1390,7 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
             "constraints": [
               {
                 "operator": "contains",
-                "values": [
-                  "association",
-                  "corporation",
-                  "individual",
-                  "other"
-                ]
+                "values": ["association", "corporation", "individual", "other"]
               },
               {
                 "operator": "required"
@@ -1583,14 +1541,13 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
 }
 ```
 
-::: 
-
+:::
 
 #### Mise à jour
 
 ::: details mise à jour
 
-```json
+````json
 {
     "label": "OWNER_CONTACT",
     "type": "contact",
@@ -2125,7 +2082,7 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
     ]
 }
 
-::: 
+:::
 
 #### Changement de propriétaire
 
@@ -2461,20 +2418,19 @@ La plupart des extensions (gltds et ngtld principalement) ont les mèmes règles
     }
   ]
 }
-```
+````
 
-::: 
+:::
 
 ### Cas du .berlin
 
-Le cas de cette extension est intéressant du fait d'une règle un peu particulière. En effet, pour disposer d'un .berlin, le nic admin **ou** le contact propriétaire doit demeuré à Berlin. 
+Le cas de cette extension est intéressant du fait d'une règle un peu particulière. En effet, pour disposer d'un .berlin, le nic admin **ou** le contact propriétaire doit demeuré à Berlin.
 
-Pour se faire, nous *conditionnons* la *contrainte* de la *valeur* des champs address.country et address.city du contact propriétaire aux valeurs des champs address.country et address.city du nic admin (et vice-versa). 
+Pour se faire, nous _conditionnons_ la _contrainte_ de la _valeur_ des champs address.country et address.city du contact propriétaire aux valeurs des champs address.country et address.city du nic admin (et vice-versa).
 
 Cela se traduit de cette manière. (Pour une raison de clareté, on a retiré volontairement les règles sur les autres champs et labels)
 
 ::: details berlin
-
 
 ```json
 {
@@ -2806,8 +2762,6 @@ Cela se traduit de cette manière. (Pour une raison de clareté, on a retiré vo
   ],
   "constraints": []
 }
-
-
 ```
 
 :::
@@ -2816,19 +2770,20 @@ Cela se traduit de cette manière. (Pour une raison de clareté, on a retiré vo
 
 Maintenant que la représentation technique des règles et ses objectifs sont expliqués, passons à la façon de jouer avec au travers des apis.
 Il y en a deux :
+
 - Une pour récupérer les règles d'eligbilités d'un domain pour une action.
 - Une pour valider des données pour un domain et pour une action.
+
 ### Get a rule
 
-Commençons par l'API permettant la récupération d'une règle d'éligbilité. Le retour de celle-ci correspond au json vu dans la partie précédente. 
-
+Commençons par l'API permettant la récupération d'une règle d'éligbilité. Le retour de celle-ci correspond au json vu dans la partie précédente.
 
 `GET /domain/configurationRule`
 
-Parameter | Required | Default | Description
---------- | -------  | ------- | -----------
-action | true | "" | L'action souhaité (create/transfer/trade/update)
-domain | true | "" | Le nom de domain concerné
+| Parameter | Required | Default | Description                                      |
+| --------- | -------- | ------- | ------------------------------------------------ |
+| action    | true     | ""      | L'action souhaité (create/transfer/trade/update) |
+| domain    | true     | ""      | Le nom de domain concerné                        |
 
 :::: tabs
 
@@ -2838,6 +2793,7 @@ domain | true | "" | Le nom de domain concerné
 var rule Rule
 err := client.Get("/domain/configurationRule?domain=foo.com&action=create", &rule)
 ```
+
 :::
 
 ::: tab Python
@@ -2846,20 +2802,21 @@ err := client.Get("/domain/configurationRule?domain=foo.com&action=create", &rul
 rule = client.get("/domain/configurationRule", domain="foo.com", action="create")
 ```
 
-::: 
+:::
 ::: tab JavaScript
 
-
 ```javascript
-client.requestPromised('GET', '/order/cart/$cartID/domain', {
-  'domain': 'foo.com',
-  'action': 'create'
-}).then(function (rule) {
-  // rule
-})
-.catch(function (err) {
-  // Return an error object
-});
+client
+  .requestPromised("GET", "/order/cart/$cartID/domain", {
+    domain: "foo.com",
+    action: "create"
+  })
+  .then(function(rule) {
+    // rule
+  })
+  .catch(function(err) {
+    // Return an error object
+  });
 ```
 
 :::
@@ -2869,7 +2826,6 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
 ::: details Response
 
 ```json
-
 {
   "and": [
     {
@@ -3058,12 +3014,7 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
             "constraints": [
               {
                 "operator": "contains",
-                "values": [
-                  "association",
-                  "corporation",
-                  "individual",
-                  "other"
-                ]
+                "values": ["association", "corporation", "individual", "other"]
               },
               {
                 "operator": "required"
@@ -3212,7 +3163,6 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
   ],
   "constraints": []
 }
-
 ```
 
 :::
@@ -3221,24 +3171,19 @@ client.requestPromised('GET', '/order/cart/$cartID/domain', {
 
 Bien qu'il est tout à fait possible (et encouragé) de vérifier les règles côté client, vous pouvez également utiliser l'API ci-dessous pour vérifier que les données pour une action donnée respecte bien les règles d'éligibilité.
 
-
 [`POST /domain/configurationRule/check`](https://api.ovh.com/console/#/domain/configurationRule/check#POST)
-
 
 En paramètre de requête, nous retrouvons l'action et le domaine souhaité.
 
-
 | Parameter | Required | Default | Description                                      |
-|-----------|----------|---------|--------------------------------------------------|
+| --------- | -------- | ------- | ------------------------------------------------ |
 | action    | true     | ""      | L'action souhaité (create/transfer/trade/update) |
 | domain    | true     | ""      | Le nom de domain concerné                        |
 
-
-En body de requête, nous retrouvons les objets suivants. 
-
+En body de requête, nous retrouvons les objets suivants.
 
 | Body         | Required | Description                                     |
-|--------------|----------|-------------------------------------------------|
+| ------------ | -------- | ----------------------------------------------- |
 | adminAccount | false    | Objet représentant les données du nic admin     |
 | techAccount  | false    | Objet représentant les données du nic tech      |
 | owner        | false    | Objet représentant les données du contact owner |
@@ -3248,9 +3193,9 @@ En body de requête, nous retrouvons les objets suivants.
 Chacun de ses objets est optionnel. Si le moteur de règle a besoin de l'un deux pour vérifier une règle, une erreur sera retourné.
 Une particularité existe cependant pour l'action trade et transfer : si un objet requis est manquant, celui ci sera récupérer depuis le service actuel.
 
-::: tip 
+::: tip
 
-Afin de tester si, sur un domain qui est déjà enregistré sur votre compte, les règles d'éligibilités sont bien respectés. 
+Afin de tester si, sur un domain qui est déjà enregistré sur votre compte, les règles d'éligibilités sont bien respectés.
 Il suffit de faire appel à cet API sur l'action `update` avec un body vide. Le moteur ira alors cherché les données en interne.
 
 :::
@@ -3266,6 +3211,7 @@ En retour, l'api retourne une 200 si la règle est respecté. A contrario, elle 
 err := client.Post("/domain/configurationRule?domain=foo.com&action=create", &data)
 
 ```
+
 :::
 
 ::: tab Python
@@ -3274,24 +3220,25 @@ err := client.Post("/domain/configurationRule?domain=foo.com&action=create", &da
 res = client.post("/domain/configurationRule?domain=foo.com&action=create", **data)
 ```
 
-::: 
+:::
 ::: tab JavaScript
 
-
 ```javascript
-client.requestPromised('POST', '/domain/configurationRule?domain=foo.com&action=create', data)
-  .then(function () {
-  })
-  .catch(function (err) {
+client
+  .requestPromised(
+    "POST",
+    "/domain/configurationRule?domain=foo.com&action=create",
+    data
+  )
+  .then(function() {})
+  .catch(function(err) {
     //Return an error object like this {error: statusCode, message: message}
   });
-
 ```
 
 :::
 
 ::::
-
 
 ::: details Response
 
