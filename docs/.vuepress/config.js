@@ -58,7 +58,16 @@ module.exports = ctx => ({
       "/": {
         lang: "en-US",
         title: "Domain API",
-        sidebar: ["/"]
+        sidebar: [
+          {
+            title: "Introduction",
+            path: "/"
+          },
+          {
+            title: "Order a Domain Name",
+            path: "/order"
+          }
+        ]
       },
       "/fr/": {
         selectText: "Langues",
