@@ -6,10 +6,10 @@ Afin de commander vos noms de domaine, voici une présentation des différents o
 
 ### Le _panier_
 
-L'objet _cart_ de l'API représente ce panier. Différentes actions sont disponible :
+L'objet _cart_ de l'API représente ce panier. Différentes actions sont disponibles :
 
-- Le créer : Peut être fait sans être authentifié
-- L'assigner à un nic : Indispensable pour valider un panier
+- Le créer : peut être fait sans être authentifié
+- L'assigner à un nic : indispensable pour valider un panier
 - Y ajouter des produits
 - Demander un aperçu
 - Demander une validation en "dry-run" (sans générer de bon de commande)
@@ -19,40 +19,42 @@ Les APIs concernées commencent par `/order/cart/`
 
 ### Les _produits_
 
-Un **item** représente un produit qui peut être ajouter dans un panier.
-Il possède
+Un _item_ représente un produit qui peut être ajouté dans un panier.
+Il est possible de :
 
-- une API pour récupérer la disponibilité du produit
-- des APIs pour ajouter/modifier/supprimer un produit dans le panier
-- une API pour récupérer les configurations requises afin de valider le panier
-- des APIs pour ajouter/supprimer une configuration associé au produit.
+- récupérer la disponibilité du produit
+- ajouter/modifier/supprimer un produit dans le panier
+- récupérer les configurations requises afin de valider le panier
+- ajouter/supprimer une configuration associée au produit.
 
-Les APIs commencent par /order/cart/{cartID}/item/
+Ces APIs commencent par `/order/cart/{cartID}/item/`
 
 ### Workflow
 
-Globalement, la commande d'un produit OVHcloud via l'API se fera toujours au travers de ces étapes:
+Globalement, la commande d'un produit OVHcloud via l'API se fera toujours à travers ces étapes :
 
 1. Créer un panier
-1. Récupérer les offres disponible pour le produit souhaité
+1. Récupérer les offres disponibles pour le produit souhaité
 1. Mettre le produit dans le panier
-1. Visualiser un résumé de son panier (optional)
-1. Récupérer les configurations requise pour ce produit
+1. Visualiser un résumé de son panier (optionnel)
+1. Récupérer les configurations requises pour ce produit
 1. Ajouter les configurations requises
-1. Vérifier son panier via une validation "dry-run" (optional)
+1. Vérifier son panier via une validation "dry-run" (optionnel)
 1. Valider son panier
 
 ## Création du panier
 
 La première étape de commande d'un nom de domaine est la création du panier avec l'API suivante :
 
-`POST /order/cart`
+```text
+POST /order/cart
+```
 
-| Parameter     | Required | Default     | Description                     |
-| ------------- | -------- | ----------- | ------------------------------- |
-| ovhSubsidiary | true     |             | OVH subsidiary                  |
-| description   | false    | ""          | Description customisé du panier |
-| expire        | false    | now + 1 day | Expiration du cart              |
+| Paramètre     | Requis | Défaut              | Description                         |
+| ------------- | ------ | ------------------- | ----------------------------------- |
+| ovhSubsidiary | oui    |                     | Filiale OVHcloud                    |
+| description   | non    | ""                  | Description personnalisée du panier |
+| expire        | non    | maintenant + 1 jour | Expiration du panier                |
 
 :::: tabs
 
@@ -60,10 +62,10 @@ La première étape de commande d'un nom de domaine est la création du panier a
 
 ```go
 type Cart struct {
-  CartID string `json:"cartId"`
-  Description string `json:"description"`
-  Expire string `json:"expire"`
-  Items []int64 `json:"items"`
+	CartID      string  `json:"cartId"`
+	Description string  `json:"description"`
+	Expire      string  `json:"expire"`
+	Items       []int64 `json:"items"`
 }
 var cart Cart
 err := client.Post("/order/cart", &cart)
@@ -88,10 +90,10 @@ cart = client.post("/order/cart", ovhSubsidiary="FR", description="", _need_auth
 client
   .requestPromised("POST", "/order/cart")
   .then(function(cart) {
-    // Cart
+    // panier
   })
   .catch(function(err) {
-    // Return an error object
+    // retourne un objet erreur
   });
 ```
 
@@ -99,7 +101,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 {
@@ -113,17 +115,19 @@ client
 
 :::
 
-Gardez la propriété cartId de côté, elle nous servira tout au long des étapes suivantes.
+Gardez la propriété `cartId` de côté, elle nous servira tout au long des étapes suivantes.
 
 ## Récupération des offres disponibles
 
-La seconde étape consiste à récupérer les offres accessible pour un domain.
+La seconde étape consiste à récupérer les offres accessibles pour un domaine.
 
-`GET /order/cart/{cartID}/domain`
+```text
+GET /order/cart/{cartID}/domain
+```
 
-| Parameter | Required | Default | Description               |
-| --------- | -------- | ------- | ------------------------- |
-| domain    | true     | ""      | le nom de domain souhaité |
+| Paramètre | Requis | Défaut | Description                |
+| --------- | ------ | ------ | -------------------------- |
+| domain    | oui    | ""     | le nom de domaine souhaité |
 
 :::: tabs
 
@@ -131,7 +135,7 @@ La seconde étape consiste à récupérer les offres accessible pour un domain.
 
 ```go
 var offers []ProductInformation
-err := client.Get("/order/cart/$cartID/domain?domain=foo.fr", &offers)
+err := client.Get(fmt.Sprintf("/order/cart/%s/domain?domain=foo.fr", cartID), &offers)
 ```
 
 :::
@@ -162,7 +166,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json{3,7,19,64}
 [
@@ -237,54 +241,56 @@ client
 
 :::
 
-Ici, il y a 4 valeurs à retenir ici :
+Il y a 4 valeurs à retenir ici :
 
-1. L'_action_ : Celle réalisable sur le domain, ça peut être un transfer ou un create
-2. La _duration_ : Ce champs représente l'unite de période sur laquelle il est possible de commander le domande. Pour un domain, P1Y (period 1 year) équivaut à une période d'un an, P2Y une période de deux ans, etc...
-3. L'_offerId_ : C'est le nom de l'offre qu'il faudra mettre lors de l'ajout du domain dans le panier
-4. Le _pricing-mode_ : C'est le détail de l'offre qu'il faudra également mettre lors de l'ajout du domain dans le panier
+1. L'_action_ : celle réalisable sur le domaine, ça peut être un "transfert" ou un "create"
+2. La _duration_ : ce champ représente l'unité de période sur laquelle il est possible de commander le domaine. Pour un domaine, P1Y (period 1 year) équivaut à une période d'un an, P2Y une période de deux ans, etc...
+3. L'_offerId_ : c'est le nom de l'offre qu'il faudra mettre lors de l'ajout du domaine dans le panier
+4. Le _pricing-mode_ : c'est le détail de l'offre qu'il faudra également mettre lors de l'ajout du domaine dans le panier
 
-Il y a deux moyens de déterminer le status du domain en fonction du retour de l'API.
+Il y a deux moyens de déterminer le statut du domaine en fonction du retour de l'API.
 
-La première consiste à avoir un mapping entre le pricing-mode et le status du domain. Voici ci-dessous cette table de mapping exhaustive.
+Le premier consiste à avoir un mapping entre le pricing-mode et le statut du domaine. Voici ci-dessous la table de mapping exhaustive.
 
-| Pricing-mode                                 | Description                                                                                                                                             |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| create-default                               | Le domain est libre et au prix standard                                                                                                                 |
-| create-premium                               | Le domain est libre mais est un premium. Son prix est variable d'un domain à l'autre.                                                                   |
-| transfer-default                             | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfer est au prix standard.                                     |
-| transfer-premium                             | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domain premium et son prix est variable d'un domain à l'autre |
-| transfer-aftermarket1, transfer-aftermarket2 | Le domain est libre via un marché secondaire. Son prix est variable d'un domain à l'autre                                                               |
+| Pricing-mode                                 | Description                                                                                                                                                |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| create-default                               | Le domaine est libre et au prix standard                                                                                                                   |
+| create-premium                               | Le domaine est libre mais est un premium. Son prix est variable d'un domaine à l'autre                                                                     |
+| transfer-default                             | Le domaine n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfert est au prix standard                                       |
+| transfer-premium                             | Le domaine n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domaine premium et son prix est variable d'un domaine à l'autre |
+| transfer-aftermarket1, transfer-aftermarket2 | Le domaine est libre via un marché secondaire. Son prix est variable d'un domaine à l'autre                                                                |
 
-La deuxième, **déprécié et bientôt supprimé** consiste à analyser le couple pricing-mode/offerId.
+Le deuxième, **déprécié et bientôt supprimé** consiste à analyser le couple pricing-mode/offerId.
 
-| Pricing-mode               | offerId                                          | Description                                                                                                                                             |
-| -------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| default                    | \$extension-create (fr-create, com-create)       | Le domain est libre et au prix standard                                                                                                                 |
-| premium                    | \$extension-create (fr-create, com-create)       | Le domain est libre mais est un premium. Son prix est variable d'un domain à l'autre.                                                                   |
-| default                    | \$extension-transfer (fr-transfer, com-transfer) | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfer est au prix standard.                                     |
-| premium                    | \$extension-transfer (fr-transfer, com-transfer) | Le domain n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domain premium et son prix est variable d'un domain à l'autre |
-| aftermarket1, aftermarket2 | \$extension-transfer (fr-transfer, com-transfer) | Le domain est libre via un marché secondaire. Son prix est variable d'un domain à l'autre                                                               |
+| Pricing-mode               | offerId                                          | Description                                                                                                                                                |
+| -------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| default                    | \$extension-create (fr-create, com-create)       | Le domaine est libre et au prix standard                                                                                                                   |
+| premium                    | \$extension-create (fr-create, com-create)       | Le domaine est libre mais est un premium. Son prix est variable d'un domaine à l'autre                                                                     |
+| default                    | \$extension-transfer (fr-transfer, com-transfer) | Le domaine n'est pas libre mais est transférable si vous en êtes le propriétaire. Son transfer est au prix standard                                        |
+| premium                    | \$extension-transfer (fr-transfer, com-transfer) | Le domaine n'est pas libre mais est transférable si vous en êtes le propriétaire. C'est un domaine premium et son prix est variable d'un domaine à l'autre |
+| aftermarket1, aftermarket2 | \$extension-transfer (fr-transfer, com-transfer) | Le domaine est libre via un marché secondaire. Son prix est variable d'un domaine à l'autre                                                                |
 
 ::: tip INFO
-Pour le moment, bien que le retour soit un tableau, seulement une offre à la fois est disponible. Dans le futur, il est possible que d'autres offres soient disponibles pour un même domaine. Un domain pourrait être à la fois transférable depuis un autre registrar ou bien disponible via un marché secondaire.
+Pour le moment, bien que le retour soit un tableau, seulement une offre à la fois est disponible. Dans le futur, il est possible que d'autres offres soient disponibles pour un même domaine. Un domaine pourrait être à la fois transférable depuis un autre registrar ou bien disponible via un marché secondaire.
 :::
 
-## Ajout d'un domain dans le panier
+## Ajout d'un domaine dans le panier
 
-Tandis que la deuxième étape est optionnel, celle-ci est obligatoire pour la commande d'un nom de domaine.
-L'appel suivant permet en effet d'ajouter le domain désiré dans le panier
+Tandis que la deuxième étape est optionnelle, celle-ci est obligatoire pour la commande d'un nom de domaine.
+L'appel suivant permet en effet d'ajouter le domaine désiré dans le panier
 
-`POST /order/cart/{cartID}/domain`
+```text
+POST /order/cart/{cartID}/domain
+```
 
-| Parameter   | Required | Default | Description                                                                                                      |
-| ----------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| domain      | true     |         | Le nom de domain souhaité                                                                                        |
-| duration    | false    |         | Période de réservation. Seule la valeur P1Y est accepté                                                          |
-| offerId     | false    |         | Offre disponible pour le domaine. Cette valeur ne peut avoir qu'une seule valeur pour un domain donné (Déprécié) |
-| quantity    | false    |         | Nombre d'années voulu. Pour le moment, seul la valeur une est autorisée                                          |
-| planCode    | false    |         | Représente le plan lié au domaine                                                                                |
-| pricingMode | false    |         | Représente l'offre lié au plan du domaine                                                                        |
+| Paramètre   | Requis | Défaut | Description                                                                                                                                      |
+| ----------- | ------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| domain      | oui    |        | Le nom de domaine souhaité                                                                                                                       |
+| duration    | non    |        | Période de réservation. Les valeurs supérieures à P1Y peuvent être acceptées sur certaines extensions, mais ne peuvent en aucun cas excéder P10Y |
+| offerId     | non    |        | Offre disponible pour le domaine. Une seule valeur est possible pour un domaine donné, voir ci-dessus pour la récupérer (déprécié)               |
+| quantity    | non    |        | Pour le moment, seule la valeur "1" est autorisée                                                                                                |
+| planCode    | non    |        | Représente le plan lié au domaine                                                                                                                |
+| pricingMode | non    |        | Représente l'offre liée au plan du domaine                                                                                                       |
 
 :::: tabs
 
@@ -292,10 +298,10 @@ L'appel suivant permet en effet d'ajouter le domain désiré dans le panier
 
 ```go
 type ItemData struct {
-  Domain string `json:"domain"`
-  OfferId string `json:"offerid"`
-  Quantity int64 `json:"quantity"`
-  Duration string `json:"duration"`
+	Domain   string `json:"domain"`
+	OfferId  string `json:"offerid"`
+	Quantity int64  `json:"quantity"`
+	Duration string `json:"duration"`
 }
 
 var item Item
@@ -303,14 +309,14 @@ var item Item
 data  := ItemData{
   Domain: "foo.fr",
 
-  // optional
-  PlanCode: "fr",
+  // optionnel
+  PlanCode:    "fr",
   PricingMode: "default-create"
-  Quantity:1,
-  Duration: "P1Y",
+  Quantity:    1,
+  Duration:    "P1Y",
 
-  // deprecated
-  OfferId: "fr-create",  // deprecated
+  // déprécié
+  OfferId: "fr-create",
 }
 err := client.Post("/order/cart", data, &item)
 ```
@@ -323,14 +329,13 @@ err := client.Post("/order/cart", data, &item)
 itemData = {
   "domain" : "foo.fr"
 
-  # optional
-
-  "planCode": "fr",
+  # optionnel
+  "planCode":    "fr",
   "pricingMode": "default-create",
-  "quantity":1,
-  "duration": "P1Y",
+  "quantity":    1,
+  "duration":    "P1Y",
 
-  # deprecated
+  # déprécié
   "offerId": "fr-create",
 }
 
@@ -344,21 +349,21 @@ item = client.post("/order/cart/{0}/domain".format(cart.get("cartId")), **itemDa
 client
   .requestPromised("POST", "/order/cart/$cartID/domain", {
     domain: "foo.fr",
-    // optional
+    // optionnel
 
     planCode: "fr",
     pricingMode: "default-create",
     quantity: 1,
     duration: "P1Y",
 
-    // deprecated
+    // déprécié
     offerId: "fr-create"
   })
   .then(function(item) {
     // item
   })
   .catch(function(err) {
-    //Return an error object like this {error: statusCode, message: message}
+    // retourne un objet {error: statusCode, message: message}
   });
 ```
 
@@ -366,7 +371,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json{7}
 {
@@ -423,21 +428,23 @@ client
 
 :::
 
-Met la valeur itemId de côté, tu en auras besoin pour la suite.
+Met la valeur `itemId` de côté, tu en auras besoin pour la suite.
 
 ## Résumé du panier
 
-Cette étape nous permet d'avoir le résumé de votre panier. Cette étape est optionnel, elle ne valide pas la consistence ou les configurations du panier. Elle nous donne seulement un aperçu de ton panier.
+Cette étape est optionnelle. Elle donne un aperçu du contenu du panier, mais elle ne valide pas sa cohérence ou les configurations qu'il contient.
 
-`GET /order/cart/{cartID}/summary`
+```text
+GET /order/cart/{cartID}/summary
+```
 
 :::: tabs
 
 ::: tab Go
 
 ```go
-var summary
-err := client.Get("/order/cart/$cartID/summary", &summary)
+var summary Summary
+err := client.Get(fmt.Sprintf("/order/cart/%s/summary", cartID), &summary)
 ```
 
 :::
@@ -455,10 +462,10 @@ summary = client.get("/order/cart/{0}/summary".format(cart.get("cartId")))
 client
   .requestPromised("GET", "/order/cart/$cartID/summary")
   .then(function(summary) {
-    // summary
+    // résumé
   })
   .catch(function(err) {
-    // Return an error object
+    // retourne un objet erreur
   });
 ```
 
@@ -466,7 +473,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 {
@@ -649,37 +656,43 @@ client
 
 Sans rentrer dans les détails de ce payload, il y a certaines choses à retenir :
 
-- L'ajout d'un item dans le panier produit 3 lignes de details sur le bon de commande
-- Une ligne de detail est ajouté par promotion (detailType = GIFT)
-- L'objet prices représente le total du panier avec ou sans taxe.
-- La liste des contrats est vide lors du résumé. Elle sera remplit lors de la validation ou de la création du bon de commande.
+- L'ajout d'un item dans le panier produit deux lignes de details sur le bon de commande
+- Une ligne de detail est ajoutée par promotion (`detailType` = `GIFT`)
+- L'objet `prices` représente le total du panier avec et sans taxe.
+- La liste des contrats est vide lors du résumé. Elle sera remplie lors de la validation ou de la création du bon de commande.
 
 ::: tip Un petit point sur la zone DNS
 
-Une chose qui peut surprendre dans ce résumé est la présence d'une zone DNS (représentée par 3 lignes de détails) alors qu'elle est absente du panier. Cela fait echo à une notion souvent méconnu, ou tout du moins, mal comprise. Une zone DNS et un domaine sont deux choses (produits) différentes. Un nom de domaine peut très bien être chez OVHcloud alors que la zone peut-être hébergé autre part. Cependant, les deux étant très lié et dans un but de faciliter la commande d'un nom de domaine, nous avons fait le choix d'ajouter automatiquement une zone à l'achat d'un nom de domaine. Bien sûr, il est possible d'ajouter toi même une zone dans le panier associé au domaine afin d'y ajouter des options tels que dnssec ou dnsanycast. Mais nous reparlerons de ceci lorsque nous aborderons les options.
+La présence d'une zone DNS (représentée par deux lignes de détails) alors qu'elle n'a pas été ajoutée au panier peut surprendre. Cela fait écho à une notion souvent méconnue, ou tout du moins, mal comprise. Une zone DNS et un domaine sont deux choses (produits) différentes. Un nom de domaine peut très bien être chez OVHcloud alors que la zone peut être hébergée autre part.
+
+Cependant, les deux étant très liés et dans le but de faciliter la commande d'un nom de domaine, nous avons fait le choix d'installer automatiquement une zone à l'achat d'un nom de domaine. Bien sûr, il est possible de commander soi-même une zone associée au domaine afin d'y ajouter des options telles que DNSSEC ou DNS Anycast. Mais nous reparlerons de ceci lorsque nous aborderons les options.
 
 :::
 
 ## Assigner le panier
 
-Bien que cette opération peut se faire dès la création du cart, elle devient indispensable à partir de maintenant. Nous le verrons par la suite, mais les configurations d'un nom de domaine et sa validation dépend du nic OVH.
+Bien que cette opération puisse se faire dès la création du panier, elle devient indispensable à partir de maintenant. Nous le verrons par la suite, les configurations d'un nom de domaine et leur validation dépendent du nic OVHcloud.
 
-`POST /order/cart/{cartId}/assign`
+```text
+POST /order/cart/{cartId}/assign
+```
 
 ## Gestion des configurations
 
-A ce stade, le panier contient un domain. Il faut maintenant gérer les configurations requises afin de pouvoir, par la suite, valider le bon de commande.
+A ce stade, le panier contient un domaine. Il faut maintenant gérer les configurations requises afin de pouvoir, par la suite, valider le bon de commande.
 
 ### Récupération des configurations requises
 
-Pour connaître ces configurations requises, il suffit d'appeler l'API suivante.
+Pour connaître les configurations requises, il suffit d'appeler l'API suivante.
 
-`GET /order/cart/{cartId}/item/{itemId}/requiredConfiguration`
+```text
+GET /order/cart/{cartId}/item/{itemId}/requiredConfiguration
+```
 
-| Parameter | Required | Default | Description                        |
-| --------- | -------- | ------- | ---------------------------------- |
-| cartId    | true     | ""      | L'id du cart                       |
-| itemId    | true     | ""      | L'id de l'item inséré dans le cart |
+| Paramètre | Requis | Défaut | Description                                   |
+| --------- | ------ | ------ | --------------------------------------------- |
+| cartId    | oui    | ""     | L'identifiant du panier                       |
+| itemId    | oui    | ""     | L'identifiant de l'item inséré dans le panier |
 
 :::: tabs
 
@@ -687,13 +700,13 @@ Pour connaître ces configurations requises, il suffit d'appeler l'API suivante.
 
 ```go
 type RequiredConfiguration struct {
-  Label string `json:"label"`
-  Required bool `json:"required"`
-  Fields []string `json:"fields,omitempty"`
-  AllowedValues []string `json:"allowedValues,omitempty"`
+	Label         string   `json:"label"`
+	Required      bool     `json:"required"`
+	Fields        []string `json:"fields,omitempty"`
+	AllowedValues []string `json:"allowedValues,omitempty"`
 }
 var requiredConfigurations []RequiredConfiguration
-err := client.Get("/order/cart/$cartID/item/$itemID/requiredConfiguration", &requiredConfigurations)
+err := client.Get(fmt.Sprintf("/order/cart/%s/item/%s/requiredConfiguration", cartID, itemID), &requiredConfigurations)
 ```
 
 :::
@@ -714,17 +727,17 @@ client
     "/order/cart/$cartID/item/$itemID/requiredConfiguration"
   )
   .then(function(requiredConfigurations) {
-    // Offers
+    // offres
   })
   .catch(function(err) {
-    // Return an error object
+    // retourne un objet erreur
   });
 ```
 
 :::
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 [
@@ -753,35 +766,35 @@ client
 
 :::
 
-La réponse ci-dessus représente l'exemple le plus commun que tu pourrras retrouvé lors de la commande de création d'un nom de domaine.
-Mais celle-ci dépend fortement de l'action désirée (transfert, creation), de l'extension ou bien du type de domain (premium, issue d'un marché de secondaire)
+La réponse ci-dessus représente l'exemple le plus commun que tu pourras retrouver lors de la commande de création d'un nom de domaine.
+Mais celle-ci dépend fortement de l'action désirée (transfert, création), de l'extension ou bien du type de domaine (premium, issu d'un marché secondaire)
 
 Voici la liste exhaustive des différentes configurations requises pour un nom de domaine
 
-| Label             | Type                           | Obligatoire           | Description                                                                                                                                                                                                                                                                                                |
-| ----------------- | ------------------------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ADMIN_ACCOUNT     | string                         | Non                   | Représente le nic ovh qui pourra administrer le domaine et sera associé en tant qu'admin sur le whois. Si vide, le nic connecté à l'API sera pris par default. La valeur attendu doit être un nic valide sous la forme xxx-ovh                                                                             |
-| TECH_ACCOUNT      | string                         | Non                   | Représente le nic ovh qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le whois. Si vide, le nic connecté à l'API sera pris pas default. La valeur attendu doit être un nic valide sous la forme xxx-ovh                                                                     |
-| OWNER_CONTACT     | /me/contact ou /domain/contact | Non                   | Représente le propriétaire du nom de domaine. Si vide, le nicadmin sera pris en modèle pour créer un contact. La valeur attendu est une chaine de charactère sous la forme /me/contact/1234 ou /domain/contact/12345                                                                                       |
-| DOMAIN_CONFIG     | json                           | Relatif à l'extension | Très rarement présent, il est lié à certaines contraintes de tld spécifique (gov.uk par exemple).                                                                                                                                                                                                          |
-| ACCEPT_CONDITIONS | bool                           | Oui si présent        | Indique que l'extension possède des conditions particulière à l'obtention de l'extension.                                                                                                                                                                                                                  |
-| REASON            | string                         | Oui si présent        | Il indique que le registre demande la raison pour laquelle le domain veut être commandé. Cela concerne généralement des domaines réservés à des usages spécifique (ville par exemple)                                                                                                                      |
-| CLAIMS_NOTICE     | string                         | Oui si présent        | Indique si un avis de marque est présente sur le domaine. Si oui, alors le domain est protégé par une marque et une notification sera alors envoyé au détenteur de la marque. Si le registrant n'est pas détenteur de la marque, le domaine pourra être supprimé par la suite sans remboursement possible. |
-| PROTECTED_CODE    | string                         | Oui si présent        | Certains domaines sont réservés par un registre et nécessite un code spécifique pour débloquer son obtention.                                                                                                                                                                                              |
-| OWNER_LEGAL_AGE   | bool                           | Oui                   | Toujours présent, il s'agit d'une configuration de type opt-in afin de certifié que le registrant à l'âge légal pour posséder un nom de domaine                                                                                                                                                            |
+| Label             | Type                           | Requis            | Description                                                                                                                                                                                                                                                                                                |
+| ----------------- | ------------------------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADMIN_ACCOUNT     | string                         | non               | Représente le nic OVHcloud qui pourra administrer le domaine et sera associé en tant qu'admin sur le Whois. Si vide, le nic connecté à l'API sera pris par défaut. La valeur attendue doit être un nic valide sous la forme xxx-ovh                                                                        |
+| TECH_ACCOUNT      | string                         | non               | Représente le nic OVHcloud qui pourra gérer techniquement le domaine et sera associé en tant que tech sur le Whois. Si vide, le nic connecté à l'API sera pris par défaut. La valeur attendue doit être un nic valide sous la forme xxx-ovh                                                                |
+| OWNER_CONTACT     | /me/contact ou /domain/contact | non               | Représente le propriétaire du nom de domaine. Si vide, le nic admin sera pris en modèle pour créer un contact. La valeur attendue est une chaîne de caractères sous la forme /me/contact/1234 ou /domain/contact/12345                                                                                     |
+| DOMAIN_CONFIG     | json                           | selon l'extension | Très rarement présent, il est lié à certaines contraintes d'extensions spécifiques (gov.uk par exemple)                                                                                                                                                                                                    |
+| ACCEPT_CONDITIONS | bool                           | oui si présent    | Indique que l'extension possède des conditions particulières à l'obtention de l'extension                                                                                                                                                                                                                  |
+| REASON            | string                         | oui si présent    | Il indique que le registre demande la raison pour laquelle le domaine veut être commandé. Cela concerne généralement des domaines réservés à des usages spécifiques (ville par exemple)                                                                                                                    |
+| CLAIMS_NOTICE     | string                         | oui si présent    | Indique si un avis de marque est présent sur le domaine. Si oui, alors le domaine est protégé par une marque et une notification sera alors envoyée au détenteur de la marque. Si le registrant n'est pas détenteur de la marque, le domaine pourra être supprimé par la suite sans remboursement possible |
+| PROTECTED_CODE    | string                         | oui si présent    | Certains domaines sont réservés par un registre et nécessitent un code spécifique pour débloquer leur obtention                                                                                                                                                                                            |
+| OWNER_LEGAL_AGE   | bool                           | oui               | Toujours présent, il s'agit d'une configuration de type opt-in afin de certifier que le registrant à l'âge légal pour posséder un nom de domaine                                                                                                                                                           |
 
 ::: danger Règles avancées lié aux contacts et aux noms de domaines
 
-Attention, cette API est designé pour répondre au besoin de la plupart des produits OVH. Cependant, les noms de domaine ont la particularité d'avoir des règles beaucoup plus complexe concernant la valeur de certaines configuration. Notamment sur les configurations ADMIN_ACCOUNT, OWNER_CONTACT ou encore DOMAIN_CONFIG. Celle-ci étant lié à des règles de gestion de la part des registres.
+Attention, cette API est conçue pour répondre aux besoins de la plupart des produits OVHcloud. Cependant, les noms de domaine ont la particularité d'avoir des règles beaucoup plus complexes concernant la valeur de certaines configuration. Notamment sur les configurations ADMIN_ACCOUNT, OWNER_CONTACT ou encore DOMAIN_CONFIG, celles-ci étant liées à des règles de gestion de la part des registres.
 
-Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à berlin. Or cette API est en incapacité de décrire ce genre de règle.
+Par exemple, pour l'obtention d'un .berlin, soit le contact registrant soit le contact admin doit résider à Berlin. Or cette API est en incapacité de décrire ce genre de règle.
 
-Pour cela, il existe d'autres API afin de décrire les informations nécessaire à un nom de domaine de manière précise. Ces APIs étant un peu complexe et utilisé également en dehors de la commande (comme pour la mise à jour d'un contact), elles ont le droit à leur propre section : [Gestion des règles](rules)
+Pour cela, il existe d'autres API afin de décrire les informations nécessaire à un nom de domaine de manière précise. Ces APIs étant un peu complexe et utilisé également en dehors de la commande (comme pour la mise à jour d'un contact), elles ont le droit à leur propre section : [Gestion des règles](rules).
 :::
 
 ::: warning Spécificité de la configuration OWNER_CONTACT
 
-Ici, le OWNER_CONTACT représente une "recourse" API, à savoir /me/contact ou plus précisement /domain/contact. Les APIs permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
+Ici, le OWNER_CONTACT représente une API de "ressource", à savoir /me/contact ou plus précisement /domain/contact. Les APIs permettant de créer ces contacts sont décrites dans la section [Gestion des contacts](contacts).
 
 :::
 
@@ -791,12 +804,14 @@ Maintenant qu'on a récupéré la liste des configurations requises, il suffit d
 
 #### Ajout d'une configuration
 
-`POST /order/cart/{cartId}/item/{itemId}/configuration`
+```text
+POST /order/cart/{cartId}/item/{itemId}/configuration
+```
 
-| Parameter | Required | Default | Description                        |
-| --------- | -------- | ------- | ---------------------------------- |
-| cartId    | true     | ""      | L'id du cart                       |
-| itemId    | true     | ""      | L'id de l'item inséré dans le cart |
+| Paramètre | Requis | Défaut | Description                                   |
+| --------- | ------ | ------ | --------------------------------------------- |
+| cartId    | oui    | ""     | L'identifiant du panier                       |
+| itemId    | oui    | ""     | L'identifiant de l'item inséré dans le panier |
 
 :::: tabs
 
@@ -804,14 +819,14 @@ Maintenant qu'on a récupéré la liste des configurations requises, il suffit d
 
 ```go
 type Configuration struct {
-  ID int64 `json:"id"`
-  Label string `json:"label"`
-  Value string `json:"value"`
+	ID    int64  `json:"id"`
+	Label string `json:"label"`
+	Value string `json:"value"`
 }
 
 type ConfigurationPayload struct {
-  Label string `json:"label"`
-   Value string `json:"value"`
+	Label string `json:"label"`
+	Value string `json:"value"`
 }
 
 var configuration Configuration
@@ -820,7 +835,7 @@ var data := ConfigurationPayload{
   Label: "OWNER_CONTACT",
   Value: "/me/contact/1234"
 }
-err := client.Post("/order/cart/$cartID/item/$itemID/configuration", data ,&configuration)
+err := client.Post(fmt.Sprintf("/order/cart/%s/item/%s/configuration", cartID, itemID), data, &configuration)
 ```
 
 :::
@@ -849,7 +864,7 @@ client
     // item
   })
   .catch(function(err) {
-    //Return an error object like this {error: statusCode, message: message}
+    // retourne un objet erreur {error: statusCode, message: message}
   });
 ```
 
@@ -857,7 +872,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 {
@@ -871,15 +886,21 @@ client
 
 #### Récupération des configurations sur un produit
 
-`GET /order/cart/{cartId}/item/{itemId}/configuration`
+```text
+GET /order/cart/{cartId}/item/{itemId}/configuration
+```
 
 #### Récupération de la valeur d'une configuration
 
-`GET /order/cart/{cartId}/item/{itemId}/configuration/{configurationId}`
+```text
+GET /order/cart/{cartId}/item/{itemId}/configuration/{configurationId}
+```
 
 #### Suppression d'une configuration
 
-`DELETE /order/cart/{cartId}/item/{itemId}/configuration/{configurationId}`
+```text
+DELETE /order/cart/{cartId}/item/{itemId}/configuration/{configurationId}
+```
 
 ## Gestion du panier
 
@@ -887,48 +908,60 @@ A tout moment, il est bien entendu possible de visualiser et manipuler le panier
 
 #### Récupération des items
 
-`GET /order/cart/{cartId}`
+```text
+GET /order/cart/{cartId}
+```
 
 #### Récupération du détail d'un item
 
-`GET /order/cart/{cartId}/item/{itemId}`
+```text
+GET /order/cart/{cartId}/item/{itemId}
+```
 
 #### Suppression d'un item
 
-`DELETE /order/cart/{cartId}/item/{itemId}`
+```text
+DELETE /order/cart/{cartId}/item/{itemId}
+```
 
 ## Validation du panier
 
 Cette étape est sans doute la plus importante du processus de commande et se fait via le call suivant.
 
-`GET /order/cart/{cartId}/checkout`
+```text
+GET /order/cart/{cartId}/checkout
+```
 
-Elle permet de récupérer le bon de commande dans sa forme final sans le générer (c'est un "dry-run"). L'objet retourné contient les contrats associés aux différents produits.
+Elle permet de récupérer le bon de commande dans sa forme finale sans le générer (c'est un "dry-run"). L'objet retourné contient les contrats associés aux différents produits.
 
 Cet appel permet également de valider les configurations comme par exemple les éligibilités du propriétaire pour un nom de domaine.
 
 ## Création du bon de commande
 
-`POST /order/cart/{cartId}/checkout`
+```text
+POST /order/cart/{cartId}/checkout
+```
 
-| Parameter                         | Required | Default | Description                                                                                    |
-| --------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------- |
-| autoPayWithPreferredPaymentMethod | true     | ""      | Permet de payer automatiquement le bon de commande avec le moyen de paiement par défaut du nic |
-| waiveRetractationPeriod           | true     | ""      | Requis pour un nom de domaine. Il représente le rejet du droit de rétractation.                |
+| Paramètre                         | Requis | Défaut | Description                                                                                    |
+| --------------------------------- | ------ | ------ | ---------------------------------------------------------------------------------------------- |
+| autoPayWithPreferredPaymentMethod | oui    | ""     | Permet de payer automatiquement le bon de commande avec le moyen de paiement par défaut du nic |
+| waiveRetractationPeriod           | oui    | ""     | Requis pour un nom de domaine. Il représente la renonciation au droit de rétractation          |
 
 ## Paiement du bon de commande
 
-Si vous n'avez pas payez le bon de commande automatiquement lors de la précédente étape, vous aurez besoin de manipuler les apis de gestion des bons de commande. Bien qu'il existe de nombreuses apis en relation avec les moyens de paiement et la gestion des bons de commande, nous partirons du principe par la suite qu'au moins un moyen de paiement est enregistré sur votre compte.
+Si vous n'avez pas payé le bon de commande automatiquement lors de la précédente étape, vous aurez besoin de manipuler les APIs de gestion des bons de commande. Bien qu'il existe de nombreuses APIs en relation avec les moyens de paiement et la gestion des bons de commande, nous partirons du principe qu'au moins un moyen de paiement est enregistré sur votre compte.
 
 ### Récupération des moyens de paiement disponible
 
-Dans un premier temps, récupérons les paiments disponible pour le bon de commande effectué plus tôt.
+Dans un premier temps, récupérons les moyens de paiement disponibles pour le bon de commande effectué plus tôt avec la [route suivante](https://api.ovh.com/console/#/me/order/%7BorderId%7D/availableRegisteredPaymentMean#GET).
 
-[`GET /me/order/{orderId}/availableRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/%7BorderId%7D/availableRegisteredPaymentMean#GET)
+```text
+GET /me/order/{orderId}/availableRegisteredPaymentMean
+```
 
-| Parameter | Required | Default | Description                                                                                                               |
-| --------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| orderId   | true     | ""      | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande) |
+| Paramètre | Requis | Défaut | Description                                                                                                          |
+| --------- | ------ | ------ | -------------------------------------------------------------------------------------------------------------------- |
+| orderId   | oui    | ""     | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](#creation-du-bon-de-commande) |
 
 :::: tabs
 
@@ -956,7 +989,7 @@ type RegisteredPaymentMean struct {
 
 var result []RegisteredPaymentMean
 
-err := client.Get("/me/order/$orderId/availableRegisteredPaymentMean",&result)
+err := client.Get(fmt.Sprintf("/me/order/%s/availableRegisteredPaymentMean", orderID), &result)
 ```
 
 :::
@@ -974,10 +1007,10 @@ item = client.get("/me/order/{0}/availableRegisteredPaymentMean".format(orderId)
 client
   .requestPromised("GET", "/me/order/$orderId/availableRegisteredPaymentMean")
   .then(function(result) {
-    // result
+    // résultat
   })
   .catch(function(err) {
-    //Return an error object like this {error: statusCode, message: message}
+    // retourne un objet erreur {error: statusCode, message: message}
   });
 ```
 
@@ -985,7 +1018,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 [
@@ -999,15 +1032,17 @@ client
 
 ### Paiement du bon de commande
 
-Le pairement du bon de commande se fait via l'api ci-dessous. Celle-ci ne retourne aucun résultat mais le status 200 indique une réussite.
+Le paiement du bon de commande se fait via l'[API ci-dessous](https://api.ovh.com/console/#/me/order/{orderId}/payWithRegisteredPaymentMean#POST). Celle-ci ne retourne aucun résultat mais le statut 200 indique une réussite.
 
-[`POST /me/order/{orderId}/payWithRegisteredPaymentMean`](https://api.ovh.com/console/#/me/order/{orderId}/payWithRegisteredPaymentMean#POST)
+```text
+POST /me/order/{orderId}/payWithRegisteredPaymentMean
+```
 
-| Parameter     | Required | Default | Description                                                                                                                                  |
-| ------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| orderId       | true     | ""      | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande)                    |
-| paymentMean   | true     | ""      | Moyen de paiement récupéré lors de la [récupération des moyens de paiement disponible](order#recuperation-des-moyens-de-paiement-disponible) |
-| paymentMeanId | false    | ""      | L'identifiant du moyen de paiment est mandatory poour les valeurs bankAccount, creditCard and paypal                                         |
+| Paramètre     | Requis                  | Défaut | Description                                                                                                                             |
+| ------------- | ----------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| orderId       | oui                     | ""     | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](#creation-du-bon-de-commande)                    |
+| paymentMean   | oui                     | ""     | Moyen de paiement récupéré lors de la [récupération des moyens de paiement disponible](#recuperation-des-moyens-de-paiement-disponible) |
+| paymentMeanId | selon moyen de paiement | ""     | L'identifiant du moyen de paiment est obligatoire poour les valeurs `bankAccount`, `creditCard` ou `paypal`                             |
 
 :::: tabs
 
@@ -1018,7 +1053,7 @@ data := map[string]string {
   "paymentMean": "fidelityAccount",
 }
 
-err := client.Post("/me/order/{orderId}/payWithRegisteredPaymentMean", data, nil)
+err := client.Post(fmt.Sprintf("/me/order/%s/payWithRegisteredPaymentMean", orderID), data, nil)
 ```
 
 :::
@@ -1048,7 +1083,7 @@ client
   })
   .then.then(function() {})
   .catch(function(err) {
-    // Return an error object
+    // retourne un objet erreur
   });
 ```
 
@@ -1056,7 +1091,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 // null
@@ -1064,15 +1099,17 @@ client
 
 :::
 
-## Suivis du bon de commande
+## Suivi du bon de commande
 
-L'api suivante permet de connaître l'état d'un bon de commande.
+L'[API suivante](https://api.ovh.com/console/#/me/order/{orderId}/status#GET) permet de connaître l'état d'un bon de commande.
 
-[`GET /me/order/{orderId}/status`](https://api.ovh.com/console/#/me/order/{orderId}/status#GET)
+```text
+GET /me/order/{orderId}/status
+```
 
-| Parameter | Required | Default | Description                                                                                                               |
-| --------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| orderId   | true     | ""      | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](order#creation-du-bon-de-commande) |
+| Paramètre | Requis | Défaut | Description                                                                                                          |
+| --------- | ------ | ------ | -------------------------------------------------------------------------------------------------------------------- |
+| orderId   | oui    | ""     | OrderId représente l'identifiant du BC obtenu lors de la [creation du bon de commande](#creation-du-bon-de-commande) |
 
 :::: tabs
 
@@ -1080,7 +1117,7 @@ L'api suivante permet de connaître l'état d'un bon de commande.
 
 ```go
 type orderStatus string
-/* Valeurs possibles pour orderStatusEnum :
+/* Valeurs possibles pour orderStatus :
     "cancelled"
     "cancelling"
     "checking"
@@ -1092,7 +1129,7 @@ type orderStatus string
 */
 var result orderStatus
 
-err := client.Get("/me/order/$orderId/status",&result)
+err := client.Get(fmt.Sprintf("/me/order/%s/status", orderID), &result)
 ```
 
 :::
@@ -1109,11 +1146,11 @@ result = client.get("/me/order/{0}/status".format(orderId))
 ```javascript
 client
   .requestPromised("GET", "/me/order/$orderId/status")
-  .then(function(result) {
-    // result
+  .then(function(status) {
+    // statut
   })
   .catch(function(err) {
-    //Return an error object like this {error: statusCode, message: message}
+    // retourne un objet erreur {error: statusCode, message: message}
   });
 ```
 
@@ -1121,7 +1158,7 @@ client
 
 ::::
 
-::: details Response
+::: details Réponse
 
 ```json
 "notPaid"
