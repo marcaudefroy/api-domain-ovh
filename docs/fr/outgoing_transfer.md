@@ -15,25 +15,23 @@ Vous pouvez vérifier dans quel état se trouve votre nom de domaine en utlisant
 
 ```json
  {
-
-    transferLockStatus: "locked",
-    dnssecSupported: true,
-    glueRecordMultiIpSupported: true,
-    lastUpdate: "2021-09-01T12:44:18+02:00",
-    owoSupported: true,
-    parentService: null,
-    offer: "gold",
-    whoisOwner: "16601832",
-    glueRecordIpv6Supported: true,
-    domain: "xxx.ovh",
-    nameServerType: "hosted"
-
+    "transferLockStatus": "locked",
+    "parentService": null,
+    "nameServerType": "hosted",
+    "offer": "gold",
+    "whoisOwner": "16601832",
+    "owoSupported": true,
+    "lastUpdate": "2022-03-10T14:00:40+01:00",
+    "glueRecordIpv6Supported": true,
+    "domain": "xxx.ovh",
+    "glueRecordMultiIpSupported": true,
+    "dnssecSupported": true
 }
 ```
 Pour mettre votre nom de domaine dans un état unlocked, utilisez la même route avec une méthode PUT :
 
-[`PUT /domain/{serviceName`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~PUT) en ajoutant le transferLockStatus à 'locked'.
-Les actions sur ces routes ne sont pas instantanées, c'est pourquoi en rééxécutant un [`GET /domain/{serviceName`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~GET), vous pouvez voir apparaître un transferLockStatus à 'unlocking' ou 'locking'.
+[`PUT /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~PUT) en ajoutant le transferLockStatus à 'locked'.
+Les actions sur ces routes ne sont pas instantanées, c'est pourquoi en rééxécutant un [`GET /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~GET), vous pouvez voir apparaître un transferLockStatus à 'unlocking' ou 'locking'.
 
 
 ## Authcode
@@ -42,7 +40,7 @@ Après avoir unlocked votre domaine, il vous faut un authcode afin de procéder 
 
 La route suivante vous permet de le récupérer :
 
-[`GET /domain/{serviceName/authInfo`](https://api.ovh.com/console/#/domain/%7BserviceName%7D/authInfo~GET)
+[`GET /domain/{serviceName}/authInfo`](https://api.ovh.com/console/#/domain/%7BserviceName%7D/authInfo~GET)
 
 Votre nouveau registrar procédera alors au transfert.
 
