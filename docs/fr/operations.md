@@ -1,3 +1,3 @@
 # Gestion des opérations
 
-*Prochainement*
+_Prochainement_

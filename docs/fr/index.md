@@ -9,9 +9,7 @@ Afin de continuer à lire cette documentation, il t'est nécessaire de prendre c
 - [Premiers pas avec les API OVHcloud](https://docs.ovh.com/fr/api/api-premiers-pas/)
 - [First Steps with the API](https://docs.ovh.com/gb/en/customer/first-steps-with-ovh-api/)
 
-
 ## SDK disponibles
-
 
 Afin de faciliter la signature des requêtes et les appels à l'api, des sdks sont disponibles dans plusieurs langages :
 
@@ -23,10 +21,10 @@ Afin de faciliter la signature des requêtes et les appels à l'api, des sdks so
 - C#: [https://github.com/ovh/csharp-ovh](https://github.com/ovh/csharp-ovh)
 - Go : [https://github.com/ovh/go-ovh](https://github.com/ovh/go-ovh)
 
-
 :::: tabs
 
 ::: tab Go
+
 ```go
 package main
 
@@ -48,10 +46,11 @@ func main() {
 	}
 }
 ```
+
 :::
 
-
 ::: tab Python
+
 ```python
 
 import ovh
@@ -63,23 +62,23 @@ client = ovh.Client(
     consumer_key='<consumer key>',
 )
 ```
+
 :::
 
 ::: tab JavaScript
-```javascript
 
-var client = require('ovh')({
-  endpoint: 'ovh-eu',
+```javascript
+var client = require("ovh")({
+  endpoint: "ovh-eu",
   appKey: APP_KEY,
   appSecret: APP_SECRET,
   consumerKey: APP_CONSUMER_KEY
 });
-
 ```
+
 :::
 
 ::::
-
 
 ## Vocabulaire
 
