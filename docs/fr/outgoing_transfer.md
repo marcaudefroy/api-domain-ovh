@@ -30,7 +30,7 @@ Vous pouvez vérifier dans quel état se trouve votre nom de domaine en utlisant
 ```
 Pour mettre votre nom de domaine dans un état unlocked, utilisez la même route avec une méthode PUT :
 
-[`PUT /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~PUT) en ajoutant le transferLockStatus à 'locked'.
+[`PUT /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~PUT) en ajoutant le transferLockStatus à 'unlocked'.
 Les actions sur ces routes ne sont pas instantanées, c'est pourquoi en rééxécutant un [`GET /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~GET), vous pouvez voir apparaître un transferLockStatus à 'unlocking' ou 'locking'.
 
 
