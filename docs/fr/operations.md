@@ -111,6 +111,6 @@ Enfin, il ne restera plus qu'à relancer l'opération via l'API [`POST /me/task/
 Il existe un grand nombre de types d'opérations différentes (plus d'une trentaine), toutes ayant chacune leurs spécificités. En tant que client, vous n'aurez que rarement à intervenir sur celles-ci. Les plus communes sont cependant les suivantes :
 
 - `DomainCreate` : création d'un nom de domaine. Les erreurs seront généralement liées aux conditions d'éligibilité, notamment dans le cas des ccTLDs.
-- `DomainIncomingTransfer`, `DomainAfterMarket` : transfert d'un nom de domaine depuis un autre registrar ou un marché secondaire. Les erreurs seront généralement liées à la demande de l'auth code permettant la validation du transfert.
+- `DomainIncomingTransfer`, `DomainAfterMarket` : transfert d'un nom de domaine depuis un autre registrar ou un marché secondaire. Les erreurs seront généralement liées à la demande de l'`auth code` permettant la validation du transfert.
 - `DomainTrade` : changement de contact propriétaire. Les erreurs seront généralement liées à des incompatibilités d'éligibilité sur le contact receveur.
 - `DomainContactUpdate` : modification des informations d'un contact. Les erreurs seront généralement liées à des informations sémantiquement invalides, à des erreurs de formattage ou encore à des incompatibilités d'éligibilité.
