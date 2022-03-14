@@ -1,12 +1,12 @@
 # Gestion des opérations
 
 La plupart des actions effectuées sur les noms de domaines se traduisent par des modifications chez le registrar (OVHcloud), ainsi que chez le registre.
-Par souci de robustesse et de performance, elles sont lancées de manière asynchrones.
+Par souci de robustesse et de performance, elles sont lancées de manière asynchrone.
 
 Pour permettre le suivi de ces changements asynchrones, les actions sont abstraites sous forme d'**opérations**. Lorsqu'une action asynchrone est lancée,
-une **opération** est créée et permet de récupérer un statut, de modifier certaines données en cas d'erreur ou encore de relancer des actions après un échec,
+une **opération** est créée et permet de récupérer un statut, de modifier certaines données en cas d'erreur ou encore de relancer des actions après un échec.
 
-Historiquement, les opérations OVHcloud sont manipulables sous deux chemins d'API distincts:
+Historiquement, les opérations OVHcloud sont manipulables sous deux chemins d'API distincts :
 
 1. [`/me/task/domain`](https://api.ovh.com/console/#/me/task/domain~GET) et ses sous-routes
 2. [`/domain/{serviceName}/task`](https://api.ovh.com/console/#/domain/%7BserviceName%7D/task~GET) et ses sous-routes
@@ -17,36 +17,36 @@ Les routes disponibles manipulent les mêmes opérations mais proposent différe
 
 Le cycle de vie nominal d'une opération est le suivant :
 
-- `todo`: l'opération a été créée mais n'est pas en cours de traitement. La plupart des opérations (`DomainCreate`, `DomainRenew`, etc.) sont exécutées dans la minute, et finalisées dans les 5 à 10 minutes.
-- `doing`: l'opération est en cours de traitement. Cette phase dure généralement quelques secondes.
-- `done`: l'opération a été traitée avec succès. Il s'agit d'un statut final.
+- `todo` : l'opération a été créée mais n'est pas en cours de traitement. La plupart des opérations (`DomainCreate`, `DomainRenew`, etc.) sont exécutées dans la minute, et finalisées dans les 5 à 10 minutes.
+- `doing` : l'opération est en cours de traitement. Cette phase dure généralement quelques secondes.
+- `done` : l'opération a été traitée avec succès. Il s'agit d'un statut final.
 
 Les statuts suivants peuvent aussi survenir dans des cas non nominaux :
 
-- `cancelled`: l'opération a été annulée, soit par le client, soit par OVHcloud. Il s'agit d'un statut final.
-- `error`: une erreur est survenue lors de l'exécution de l'opération. Deux cas sont possibles :
+- `cancelled` : l'opération a été annulée, soit par le client, soit par OVHcloud. Il s'agit d'un statut final.
+- `error` : une erreur est survenue lors de l'exécution de l'opération. Deux cas sont possibles :
   1. Une information fournie par le client est invalide ou manquante : dans ce cas vous aurez la possibilité de corriger les données problématiques et pourrez relancer l'opération.
   2. Un problème est survenu du côté d'OVHcloud : dans ce cas vous ne pourrez pas relancer l'opération vous-même. L'opération sera relancée périodiquement de manière automatique, mais vous devrez ouvrir une demande de support si malgré cela le problème persiste.
 
 ## Visualiser les opérations en cours
 
-Pour lister vos opérations, vous pouvez utiliser l'API suivante:
+Pour lister vos opérations, vous pouvez utiliser l'API suivante :
 
 [`GET /me/task/domain`](https://api.ovh.com/console/#/me/task/domain~GET)
 
 | Paramètre  | Obligatoire | Description                                      |
 | ---------- | :---------: | ------------------------------------------------ |
-| `domain`   |      ✗      | Filtrer les opérations liées à ce nom de domaine |
-| `function` |      ✗      | Type des opérations à récupérer                  |
-| `status`   |      ✗      | Statut des opérations à récupérer                |
+| `domain`   |     non     | Filtrer les opérations liées à ce nom de domaine |
+| `function` |     non     | Type des opérations à récupérer                  |
+| `status`   |     non     | Statut des opérations à récupérer                |
 
 Cet appel API retournera la liste des identifiants des opérations correspondant à vos filtres.
 
-Pour récupérer les détails liés à une opération en particulier, vous pouvez utiliser l'API suivante:
+Pour récupérer les détails liés à une opération en particulier, vous pouvez utiliser l'API suivante :
 
 [`GET /me/task/domain/{id}`](https://api.ovh.com/console/#/me/task/domain/%7Bid%7D~GET)
 
-Les champs les plus intéressants par cette API sont les suivants :
+Les champs les plus intéressants dans la réponse sont les suivants :
 
 - `status` : correspond aux statuts présentés dans la section précédente.
 - `comment` : contient des informations détaillées sur le statut de l'opération. En particulier, si l'opération est en statut `error`, ce champ contiendra des indications pour vous aider à corriger le problème.
@@ -102,13 +102,22 @@ Vous pourrez lister plus d'informations sur la façon de renseigner ce champ et 
 }
 ```
 
-Pour modifier le champ `legitimacyAfnic`, il faudra utiliser l'API [`PUT /me/task/domain/{id}/argument/{key}`](https://eu.api.ovh.com/console/#/me/task/domain/%7Bid%7D/argument/%7Bkey%7D~PUT) en renseignant sa nouvelle valeur. Une fois la valeur modifiée, vous pourrez si vous le souhaitez réutiliser l'API [`GET /me/task/domain/{id}/argument/{key}`](https://eu.api.ovh.com/console/#/me/task/domain/%7Bid%7D/argument/%7Bkey%7D~GET) pour vérifier qu'elle ait bien été prise en compte.
+Pour modifier le champ `legitimacyAfnic`, il faudra utiliser l'API [`PUT /me/task/domain/{id}/argument/{key}`](https://eu.api.ovh.com/console/#/me/task/domain/%7Bid%7D/argument/%7Bkey%7D~PUT) en renseignant sa nouvelle valeur. Par exemple :
+
+```
+PUT /me/task/domain/exemple.fr/argument/legitimacyAfnic
+{
+  "value": "Je suis le maire de la ville Exemple."
+}
+```
+
+Une fois la valeur modifiée, vous pourrez si vous le souhaitez réutiliser l'API [`GET /me/task/domain/{id}/argument/{key}`](https://eu.api.ovh.com/console/#/me/task/domain/%7Bid%7D/argument/%7Bkey%7D~GET) pour vérifier qu'elle a bien été prise en compte.
 
 Enfin, il ne restera plus qu'à relancer l'opération via l'API [`POST /me/task/domain/{id}/relaunch`](https://eu.api.ovh.com/console/#/me/task/domain/%7Bid%7D/relaunch~POST). Celle-ci devrait s'exécuter dans les minutes à venir et ainsi se terminer correctement.
 
 ## Types d'opérations
 
-Il existe un grand nombre de types d'opérations différentes (plus d'une trentaine), toutes ayant chacune leurs spécificités. En tant que client, vous n'aurez que rarement à intervenir sur celles-ci. Les plus communes sont cependant les suivantes :
+Il existe un grand nombre de types d'opérations différentes (plus d'une trentaine), toutes ayant leurs spécificités. En tant que client, vous n'aurez que rarement à intervenir sur celles-ci. Les plus communes sont cependant les suivantes :
 
 - `DomainCreate` : création d'un nom de domaine. Les erreurs seront généralement liées aux conditions d'éligibilité, notamment dans le cas des ccTLDs.
 - `DomainIncomingTransfer`, `DomainAfterMarket` : transfert d'un nom de domaine depuis un autre registrar ou un marché secondaire. Les erreurs seront généralement liées à la demande de l'`auth code` permettant la validation du transfert.

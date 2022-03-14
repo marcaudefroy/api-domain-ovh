@@ -4,9 +4,9 @@ TODO
 
 The nominal lifecycle of an operation is simply:
 
-- `todo`: the operation has been created but is not currently being treated. Most operations (`DomainCreate`, `DomainRenew`, etc.) are executed in the minute, and finalized in 5 to 10 minutes.
+- `todo`: the operation has been created but is not currently being handled. Most operations (`DomainCreate`, `DomainRenew`, etc.) are executed in the minute, and finalized in 5 to 10 minutes.
 - `doing`: the operation is currently being executed.
-- `done`: the operation terminated successfully. This is a final status.
+- `done`: the operation completed successfully. This is a final status.
 
 Some additional statuses can occur under non nominal circumstances:
 
