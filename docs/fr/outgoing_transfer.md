@@ -1,6 +1,52 @@
 # Transfert sortant
 
-// TODO: Expliquer de manière général la notion de lock/Unlock, la notion de authInfo et à quoi ça sert.
-// TODO: Expliquer le workflow générique des transferts sortants (ne pas oublier de bien préciser que pour le cctlds, ça peut différer)
+On parle de transfert sortant (ou outgoing transfer) lorsqu'un client souhaite déléguer la gestion de son nom de domaine vers un autre registrar. Les instructions suivantes décrivent la manière la plus courante de procéder à ce transfert. Cependant, cette procédure peut varier pour quelques ccTLDs comme .lu, .uk, .hk, etc...
+Dans ce cas, il convient de se référer à la documentation du registre.
 
-// TODO: Expliquer comment via api, unlock son domaine afin de récupérer son code authInfo
+## Domaine lock
+
+Un domain lock est une sécurité permettant d'éviter que votre domaine soit la cible de tentatives de transfert vers un autre registrar. 
+
+Cela signifie que si cette option est activée sur votre nom de domaine, ce dernier ne peut être transféré sans avoir été unlocked au préalable.
+
+Vous pouvez vérifier dans quel état se trouve votre nom de domaine en utlisant la route suivante :
+
+ [`GET /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~GET)
+
+::: details Response
+
+```json
+ {
+    "transferLockStatus": "locked",
+    "parentService": null,
+    "nameServerType": "hosted",
+    "offer": "gold",
+    "whoisOwner": "12345678",
+    "owoSupported": true,
+    "lastUpdate": "2022-03-10T14:00:40+01:00",
+    "glueRecordIpv6Supported": true,
+    "domain": "xxx.ovh",
+    "glueRecordMultiIpSupported": true,
+    "dnssecSupported": true
+}
+```
+
+:::
+
+Pour mettre votre nom de domaine dans un état unlocked, utilisez la même route avec une méthode `PUT` :
+
+[`PUT /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~PUT) en ajoutant le `transferLockStatus` à 'unlocked'.
+Les actions sur ces routes ne sont pas instantanées, c'est pourquoi en réexécutant un [`GET /domain/{serviceName}`](https://api.ovh.com/console/#/domain/%7BserviceName%7D~GET), vous pouvez voir apparaître un `transferLockStatus` à `unlocking` ou `locking`.
+
+
+## Authcode
+
+Après avoir unlocked votre domaine, il vous faut un authcode afin de garantir que vous en avez la propriété, pour pouvoir procéder au transfert sortant. Ce code sera à fournir à votre nouveau registrar.
+
+La route suivante vous permet de le récupérer :
+
+[`GET /domain/{serviceName}/authInfo`](https://api.ovh.com/console/#/domain/%7BserviceName%7D/authInfo~GET)
+
+Votre nouveau registrar procédera alors au transfert.
+
+NB : Pour l'extension .uk, se référer à la [`documentation`](https://docs.ovh.com/gb/en/domains/web_hosting_how_to_transfer_a_couk_domain_name/) dédiée. 
